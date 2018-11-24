@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -119,8 +119,8 @@ namespace HexaColor.Model
             this.mapSize = rows;
             this.cells = new Dictionary<Position, Cell>();
 
-            IEnumerable<Int32> rowNumbers = Enumerable.Range(1, mapSize);
-            IEnumerable<Int32> columnNumbers = Enumerable.Range(1, mapSize);
+            IEnumerable<Int32> rowNumbers = Enumerable.Range(0, mapSize);
+            IEnumerable<Int32> columnNumbers = Enumerable.Range(0, mapSize);
 
             foreach(Int32 rowNumber in rowNumbers) 
             {
@@ -166,8 +166,8 @@ namespace HexaColor.Model
 
         private bool isValidPosition(Position position)
         {
-            if(position.rowCooridnate < 1 || position.columnCooridnate < 1
-                || position.rowCooridnate > mapSize || position.columnCooridnate > mapSize)
+            if(position.rowCooridnate < 0 || position.columnCooridnate < 0
+                || position.rowCooridnate >= mapSize || position.columnCooridnate >= mapSize)
             {
                 return false;
             }
