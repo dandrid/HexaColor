@@ -95,10 +95,10 @@ namespace HexaColor.Model
             return true;
         }
 
+        private Random random = new Random();
         private Color getRandomColor(int usedColors)
         {
             Array values = Enum.GetValues(typeof(Color));
-            Random random = new Random();
             Color randomColor = (Color)values.GetValue(random.Next(usedColors));
             return randomColor;
         }

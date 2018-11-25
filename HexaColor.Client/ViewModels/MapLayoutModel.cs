@@ -24,7 +24,7 @@ namespace HexaColor.Client.ViewModels
             MapColorCount = mapColorCount;
             MapSize = mapSize;
             // TODO
-            GameModel = new Model.Game(2, 5, 9, 9);
+            GameModel = new Model.Game(2, mapColorCount, mapSize, mapSize);
             //Connection = new WebSocketConnection();
             //InitMapLayout();
         }
