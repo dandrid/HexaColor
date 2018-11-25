@@ -84,7 +84,7 @@ namespace HexaColor.Client.Views
             int.TryParse((ColorBox.SelectedItem as ComboBoxItem).Content.ToString(), out int colorCnt);
             int.TryParse((SizeBox.SelectedItem as ComboBoxItem).Content.ToString().Substring(0,1), out int size);
 
-            MapLayoutModel mapLayoutModel = new MapLayoutModel(name, 2, colorCnt, size); // TODO player number
+            MapLayoutModel mapLayoutModel = new MapLayoutModel(name, playerCnt, colorCnt, size); // TODO player number
             mapLayoutModel.InitMapLayout();
             LeftPanelDataContext = mapLayoutModel;
             //MessageBox.Show(String.Format("Initialized Name: {0}, Color count: {1}, Map size: {2}", name, colorCnt, size));

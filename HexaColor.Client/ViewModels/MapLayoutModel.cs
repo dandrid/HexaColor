@@ -30,6 +30,7 @@ namespace HexaColor.Client.ViewModels
             // TODO
             //GameModel = new Model.Game(playerNumber, mapColorCount, mapSize, mapSize);
             Connection = new WebSocketConnection();
+            Connection.StartListening();
             InitMapLayout();
         }
 
