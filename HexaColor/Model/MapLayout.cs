@@ -45,44 +45,75 @@ namespace HexaColor.Model
                     cells.Add(new Position(rowNumber, columnNumber), newCell);
                 }
             }
-
-            setNeighbourCellValues();
         }
 
-        private void setNeighbourCellValues()
+        /**
+         * Changes all continious colors starting from the given position 
+         */
+        public void changeContinousColors(Position position, Color newColor)
         {
-            foreach (var pair in cells)
+            Cell cell = cells[position];
+            Color oldColor = cell.color;
+            cell.color = newColor;
+
+            List<Position> neighbours = getNeighbourCellPositions(position);
+            foreach (Position neighbourPosition in neighbours)
             {
-                Position position = pair.Key;
-                Cell cell = pair.Value;
-
-                var possibleNeighbourPositions = new List<Position>();
-
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate - 1, position.columnCooridnate));
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate, position.columnCooridnate - 1));
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate, position.columnCooridnate + 1));
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate - 1));
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate));
-                possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate + 1));
-
-                var actualNeighbourCells = new List<Cell>();
-                foreach (var possiblePosition in possibleNeighbourPositions)
+                Cell neighbourCell = cells[neighbourPosition];
+                if (neighbourCell.color == oldColor)
                 {
-                    if (isValidPosition(possiblePosition))
-                    {
-                        Cell neighbourCell;
-                        if (cells.TryGetValue(possiblePosition, out neighbourCell))
-                        {
-                            actualNeighbourCells.Add(neighbourCell);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException(string.Format("Invalid state, cell not exists, row: {0}, column: {1}", possiblePosition.rowCooridnate, possiblePosition.columnCooridnate));
-                        }
-                    }
+                    changeContinousColors(neighbourPosition, newColor);
                 }
-                cell.neighbourCells = actualNeighbourCells;
             }
+        }
+
+        public HashSet<Color> getContinousNeighbourColors(Position position)
+        {
+            return getContinousNeighbourColorsHelper(position, cells[position].color, new HashSet<Cell>(), new HashSet<Color>());
+        }
+
+        private HashSet<Color> getContinousNeighbourColorsHelper(Position position, Color startingColor, HashSet<Cell> visiteCells, HashSet<Color> differentColors)
+        {
+            Cell cell = cells[position];
+            if (cell.color != startingColor)
+            {
+                differentColors.Add(cell.color);
+            }
+            visiteCells.Add(cell);
+
+            List<Position> neighbourCellPositions = getNeighbourCellPositions(position);
+            foreach (Position neighbourCellPosition in neighbourCellPositions)
+            {
+                Cell neighbourCell = cells[neighbourCellPosition];
+                if (neighbourCell.color == startingColor && !visiteCells.Contains(neighbourCell))
+                {
+                    getContinousNeighbourColorsHelper(position, startingColor, visiteCells, differentColors);
+                }
+            }
+            return differentColors;
+        }
+
+        private List<Position> getNeighbourCellPositions(Position position)
+        {
+            var possibleNeighbourPositions = new List<Position>();
+
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate - 1, position.columnCooridnate));
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate, position.columnCooridnate - 1));
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate, position.columnCooridnate + 1));
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate - 1));
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate));
+            possibleNeighbourPositions.Add(new Position(position.rowCooridnate + 1, position.columnCooridnate + 1));
+
+            var actualNeighbourPositions = new List<Position>();
+            foreach (var possiblePosition in possibleNeighbourPositions)
+            {
+                if (isValidPosition(possiblePosition))
+                {
+                    actualNeighbourPositions.Add(possiblePosition);
+                }
+            }
+            return actualNeighbourPositions;
+            
         }
 
         private bool isValidPosition(Position position)
@@ -101,22 +132,6 @@ namespace HexaColor.Model
             Array values = Enum.GetValues(typeof(Color));
             Color randomColor = (Color)values.GetValue(random.Next(usedColors));
             return randomColor;
-        }
-
-        /**
-         * Changes all continious colors starting from the given position 
-         */
-        public void changeContinousColors(Position position, Color color)
-        {
-            Cell cell;
-            if (cells.TryGetValue(position, out cell))
-            {
-                cell.changeContinousColors(color);
-            }
-            else
-            {
-                throw new ArgumentException("Position not found in the game!");
-            }
         }
 
         public Queue<Position> getPlayerStartingPositions(int playerNumber)

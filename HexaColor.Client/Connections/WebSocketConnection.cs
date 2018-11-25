@@ -19,6 +19,7 @@ namespace HexaColor.Client.Connections
         public WebSocketConnection()
         {
             webSocket = new ClientWebSocket();
+            webSocket.ConnectAsync(ConnectionUri, CancellationToken.None);
         }
 
         public async Task Close()
@@ -41,17 +42,12 @@ namespace HexaColor.Client.Connections
             return null;
         }
 
-        public async Task Send(WsClientMessage message)
+        public async Task Send(GameChange message)
         {
-            using (webSocket)
-            {
-                await webSocket.ConnectAsync(ConnectionUri, CancellationToken.None);
-
-                byte[] buffer;
-                string json = new JavaScriptSerializer().Serialize(message);
-                buffer = Encoding.UTF8.GetBytes(json);
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
+            byte[] buffer;
+            string json = new JavaScriptSerializer().Serialize(message);
+            buffer = Encoding.UTF8.GetBytes(json);
+            await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
     }

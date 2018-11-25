@@ -41,8 +41,8 @@ namespace HexaColor.Server
             httpListener.BeginGetContext(OnHttpRequest, httpListener);
             if (context.Request.IsWebSocketRequest)
             {
-                //HandleWebSocketClient(context);
-                SimpleWebSocketClientHandle(context);
+                HandleWebSocketClient(context);
+                //SimpleWebSocketClientHandle(context);
             }
         }
 
@@ -119,6 +119,7 @@ namespace HexaColor.Server
                 // Add player to game
                 sessions.Add(currentSession = new Session(game.addNewPlayer(joinGameEvent.playerName), ws));
             }
+            updatePlayers(game.createMapUpdate());
 
             // handle game changes
             while (true)

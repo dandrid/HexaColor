@@ -69,17 +69,9 @@ namespace HexaColor.Model
             // TODO check if player can choose color
             int nextPlayerIndex = (players.IndexOf(player) + 1) % players.Count;
             nextPlayer = players.ElementAt(nextPlayerIndex);
-
-            Cell playerCell;
-            if (mapLayout.cells.TryGetValue(player.startingPosition, out playerCell))
-            {
-                HashSet<Color> availableColors = playerCell.getContinousNeighbourColors();
-                return new NextPlayer(nextPlayer, availableColors.ToList<Color>());
-            }
-            else
-            {
-                throw new InvalidOperationException("Invalid state, player must have a starting position!");
-            }
+            
+            HashSet<Color> availableColors = mapLayout.getContinousNeighbourColors(player.startingPosition);
+            return new NextPlayer(nextPlayer, availableColors.ToList<Color>());
         }
 
         public bool isGameWon()

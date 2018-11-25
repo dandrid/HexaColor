@@ -10,8 +10,9 @@ namespace HexaColor.Model
 
     public class ColorChange : GameChange
     {
-        public readonly Color newColor;
+        public Color newColor { get; set; }
 
+        public ColorChange() { }
         public ColorChange(Color newColor)
         {
             this.newColor = newColor;
@@ -20,15 +21,25 @@ namespace HexaColor.Model
 
     public class JoinGame : GameChange
     {
-        public readonly string playerName;
+        public string playerName { get; set; }
+
+        public JoinGame() { }
+
+        public JoinGame(string playerName)
+        {
+            this.playerName = playerName;
+        }
     }
 
     public class NewGame : GameChange
     {
-        public readonly int playerNumber;
-        public readonly int usedColors;
-        public readonly int rows;
-        public readonly int columns;
+        public int playerNumber { get; set; }
+        public int usedColors { get; set; }
+        public int rows { get; set; }
+        public int columns { get; set; }
+
+
+        public NewGame() { }
 
         public NewGame(int playerNumber, int usedColors, int rows, int columns)
         {

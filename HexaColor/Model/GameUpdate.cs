@@ -10,8 +10,10 @@ namespace HexaColor.Model
 
     public class MapUpdate : GameUpdate
     {
-        public readonly MapLayout mapLayout;
-        public readonly List<Player> players;
+        public MapLayout mapLayout { get; set; }
+        public List<Player> players { get; set; }
+
+        public MapUpdate() { }
 
         public MapUpdate(MapLayout mapLayout, List<Player> players)
         {
@@ -22,8 +24,10 @@ namespace HexaColor.Model
 
     public class NextPlayer : GameUpdate
     {
-        public readonly Player player;
-        public readonly List<Color> avilableColors;
+        public Player player { get; set; }
+        public List<Color> avilableColors { get; set; }
+
+        public NextPlayer() { }
 
         public NextPlayer(Player player, List<Color> avilableColors)
         {
@@ -37,7 +41,9 @@ namespace HexaColor.Model
         /*
          * Players ordered by the points. Index 0 is the first.
         */
-        public readonly List<Player> players;
+        public List<Player> players { get; set; }
+
+        public GameWon() { }
 
         public GameWon(List<Player> players)
         {
@@ -47,11 +53,13 @@ namespace HexaColor.Model
 
     public class GameError : GameUpdate
     {
-        public readonly Exception exception;
+        public string error { get; set; }
+
+        public GameError() { }
 
         public GameError(Exception exception)
         {
-            this.exception = exception;
+            this.error = exception.Message;
         }
     }
 }

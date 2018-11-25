@@ -10,31 +10,32 @@ namespace HexaColor.Client.ViewModels
     public class MapLayoutModel
     {
 
-        public string MapName { get; private set; }
-        public int MapPlayerCount { get; set; }
+        public string PlayerName { get; private set; }
         public int MapColorCount { get; private set; }
         public int MapSize { get; private set; }
+        public int PlayerNumber { get; private set; }
 
         public Model.Game GameModel { get; set; }
 
         public WebSocketConnection Connection { get; private set; }
 
-        public MapLayoutModel(string mapName, int mapPlayerCount, int mapColorCount, int mapSize)
+        public MapLayoutModel(string playerName, int playerNumber, int mapColorCount, int mapSize)
         {
-            MapName = mapName;
-            MapPlayerCount = mapPlayerCount;
+            PlayerName = playerName;
+            PlayerNumber = playerNumber;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
             // TODO
-            GameModel = new Model.Game(mapPlayerCount, mapColorCount, mapSize, mapSize);
-            //Connection = new WebSocketConnection();
-            //InitMapLayout();
+            //GameModel = new Model.Game(playerNumber, mapColorCount, mapSize, mapSize);
+            Connection = new WebSocketConnection();
+            InitMapLayout();
         }
 
 
-        public async Task InitMapLayout()
+        public async void InitMapLayout()
         {
-            //await Connection.Send(new Model.NewGame(new Random(1000).Next(), MapColorCount, MapSize, MapSize));
+            await Connection.Send(new Model.NewGame(PlayerNumber, MapColorCount, MapSize, MapSize));
+            await Connection.Send(new Model.JoinGame(PlayerName));
         }
     }
 }
