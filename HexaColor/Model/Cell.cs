@@ -28,5 +28,28 @@ namespace HexaColor.Model
                 }
             }
         }
+
+        public HashSet<Color> getContinousNeighbourColors()
+        {
+            return getContinousNeighbourColorsHelper(color, new HashSet<Cell>(), new HashSet<Color>());
+        }
+
+        private HashSet<Color> getContinousNeighbourColorsHelper(Color startingColor, HashSet<Cell> visiteCells, HashSet<Color> differentColors)
+        {
+            if (color != startingColor)
+            {
+                differentColors.Add(color);
+            }
+            visiteCells.Add(this);
+
+            foreach (Cell neighbourCell in neighbourCells)
+            {
+                if (neighbourCell.color == startingColor && !visiteCells.Contains(neighbourCell))
+                {
+                    getContinousNeighbourColorsHelper(startingColor, visiteCells, differentColors);
+                }
+            }
+            return differentColors;
+        }
     }
 }

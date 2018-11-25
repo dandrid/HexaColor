@@ -10,6 +10,7 @@ namespace HexaColor.Model
     {
         private MapLayout mapLayout;
         private List<Player> players;
+        private Player nextPlayer;
         private Queue<Position> availableStartingPositions;
 
         public Game(int playerNumber, int usedColors, int rows, int columns)
@@ -23,6 +24,7 @@ namespace HexaColor.Model
                 throw new ArgumentException("Invalid color number!");
             }
             players = new List<Player>();
+            nextPlayer = null;
 
             mapLayout = new MapLayout(rows, columns, usedColors);
             availableStartingPositions = mapLayout.getPlayerStartingPositions(playerNumber);
@@ -45,10 +47,14 @@ namespace HexaColor.Model
             return availableStartingPositions.Count == 0;
         }
 
-        public List<GameUpdate> handleChanges(GameChange change, Player player)
+        public GameUpdate handleChanges(GameChange change, Player player)
         {
             if (change is ColorChange)
             {
+                if (nextPlayer != player)
+                {
+                    throw new InvalidOperationException(string.Format("Not this player turn! Next player is: {0}, but {1} sent a color", nextPlayer.name, player.name));
+                }
                 ColorChange colorChange = (ColorChange)change;
                 mapLayout.changeContinousColors(player.startingPosition, colorChange.newColor);
             }
@@ -56,17 +62,24 @@ namespace HexaColor.Model
             if (isGameWon())
             {
                 calculatePoints();
-                //throw new NotImplementedException(); // TODO Handle the game won, send to clients
-                return new GameWon(...);
+                return new GameWon(players.OrderBy(p => p.points).ToList());
             }
 
             // Calculate next player
             // TODO check if player can choose color
             int nextPlayerIndex = (players.IndexOf(player) + 1) % players.Count;
-            Player nextPlayer = players.ElementAt(nextPlayerIndex);
+            nextPlayer = players.ElementAt(nextPlayerIndex);
 
-            //throw new NotImplementedException(); // TODO Send next player to client
-            return new NextPlayer(player, ...);
+            Cell playerCell;
+            if (mapLayout.cells.TryGetValue(player.startingPosition, out playerCell))
+            {
+                HashSet<Color> availableColors = playerCell.getContinousNeighbourColors();
+                return new NextPlayer(nextPlayer, availableColors.ToList<Color>());
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid state, player must have a starting position!");
+            }
         }
 
         public bool isGameWon()

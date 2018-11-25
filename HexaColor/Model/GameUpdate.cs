@@ -44,4 +44,14 @@ namespace HexaColor.Model
             this.players = players;
         }
     }
+
+    public class GameError : GameUpdate
+    {
+        public readonly Exception exception;
+
+        public GameError(Exception exception)
+        {
+            this.exception = exception;
+        }
+    }
 }
