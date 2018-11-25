@@ -44,6 +44,11 @@ namespace HexaColor.Client.Views
         public MapLayoutView()
         {
             InitializeComponent();
+            Model.MapLayoutInitialized += Model_MapLayoutInitialized;   
+        }
+
+        private void Model_MapLayoutInitialized()
+        {
             InitStyles();
             InitCanvas();
             InitHexagons();
