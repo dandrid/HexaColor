@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:HexaColor.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <Style x:Key="NotPressedColorBtnStyle" TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5,5,5,5" />
             <Setter Property="Template">
@@ -32,7 +32,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
         <StackPanel.Resources>
@@ -41,15 +41,17 @@
             </Style>
         </StackPanel.Resources>
         <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Name: " />
-            <TextBox Grid.Row="0" Grid.Column="2" Width="100" HorizontalAlignment="Right" />
+            <TextBlock Text="Name: " />
+            <TextBox Name="NameBox" Width="100" HorizontalAlignment="Right" />
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="Size: " />
-            <TextBox Grid.Row="1" Grid.Column="2" Width="100" HorizontalAlignment="Right" />
+            <TextBlock Text="Color count: " />
+            <TextBox Name="ColorBox" Width="100" HorizontalAlignment="Right" />
         </DockPanel>
-        <WrapPanel Name="ColorsPanel" Width="200">
-        </WrapPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Text="Size: " />
+            <TextBox Name="SizeBox" Width="100" HorizontalAlignment="Right" />
+        </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
             <Button Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" />
             <Button Name="OkBtn" Click="OkBtn_Click" Content="Ok" HorizontalAlignment="Right" />
