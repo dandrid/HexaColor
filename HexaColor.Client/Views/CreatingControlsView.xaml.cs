@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HexaColor.Client
+namespace HexaColor.Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CreatingControlsView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CreatingControlsView : UserControl
     {
-        public MainWindow()
+        public CreatingControlsView()
         {
             InitializeComponent();
         }

@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="HexaColor.Client.Views.StartingControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HexaColor.Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    
+    <StackPanel Name="Panel" HorizontalAlignment="Center" VerticalAlignment="Top" Background="AliceBlue">
+        <Button Name="CreateBtn" Content="Create" Click="CreateBtn_Click" Margin="20"></Button>
+        <Button Name="ConnectBtn" Content="Connect" Click="ConnectBtn_Click" Margin="20"></Button>
+    </StackPanel>
+    
+</UserControl>
