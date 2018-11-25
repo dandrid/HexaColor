@@ -9,11 +9,11 @@ namespace HexaColor.Client.Connections
     public interface IConnection
     {
 
-        void Open();
-        void Close();
-        void Send(Model.GameChange gameChangeEvent);
-        Model.GameUpdate Receive();
-        bool IsOpen();
+        //Task Open();
+        //Task Close();
+        //Task Send(Model.GameChange gameChangeEvent);
+        //Task<Model.GameUpdate> Receive();
+        //bool IsOpen();
 
 
     }

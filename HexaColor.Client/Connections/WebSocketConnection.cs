@@ -1,49 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using HexaColor.Model;
+using HexaColor.Networking;
 
 namespace HexaColor.Client.Connections
 {
     public class WebSocketConnection : IConnection
     {
-        private static string ConnectionUri = "";
-        private bool isOpen;
+        private static Uri ConnectionUri = new Uri("ws://localhost:4280/HexaColor/");
+        private static ClientWebSocket webSocket;
 
         public WebSocketConnection()
         {
-            isOpen = false;
+            webSocket = new ClientWebSocket();
         }
 
-        public void Open()
+        public async Task Close()
         {
-            isOpen = true;
+            try
+            {
+                if(webSocket != null)
+                {
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "normal_exit", CancellationToken.None);
+                }
+            }
+            finally
+            {
+                webSocket.Dispose();
+            }
         }
 
-        public void Close()
-        {
-            isOpen = false;
-        }
-
-        public GameUpdate Receive()
+        public Task<GameUpdate> Receive()
         {
             return null;
         }
 
-        public void Send(GameChange gameChangeEvent)
+        public async Task Send(WsClientMessage message)
         {
-            if(isOpen)
+            using (webSocket)
             {
-                // TODO
+                await webSocket.ConnectAsync(ConnectionUri, CancellationToken.None);
+
+                byte[] buffer;
+                string json = new JavaScriptSerializer().Serialize(message);
+                buffer = Encoding.UTF8.GetBytes(json);
+                await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
             }
-            return;
         }
 
-        public bool IsOpen()
-        {
-            return isOpen;
-        }
     }
 }

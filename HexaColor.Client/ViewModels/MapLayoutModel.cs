@@ -16,22 +16,23 @@ namespace HexaColor.Client.ViewModels
 
         public Model.Game GameModel { get; set; }
 
-        public IConnection Connection { get; private set; }
+        public WebSocketConnection Connection { get; private set; }
 
         public MapLayoutModel(string mapName, int mapColorCount, int mapSize)
         {
             MapName = mapName;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
-            Connection = new WebSocketConnection();
-            Connection.Open();
-            InitMapLayout();
-            GameModel = new Model.Game(4, mapColorCount, mapSize, mapSize);
+            // TODO
+            GameModel = new Model.Game(2, 5, 9, 9);
+            //Connection = new WebSocketConnection();
+            //InitMapLayout();
         }
 
-        public void InitMapLayout()
+
+        public async Task InitMapLayout()
         {
-            Connection.Send(new Model.NewGame(new Random(1000).Next(), MapColorCount, MapSize, MapSize));
+            //await Connection.Send(new Model.NewGame(new Random(1000).Next(), MapColorCount, MapSize, MapSize));
         }
     }
 }

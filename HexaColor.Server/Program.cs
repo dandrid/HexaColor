@@ -1,4 +1,5 @@
 ﻿using HexaColor.Model;
+using HexaColor.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,26 +26,8 @@ namespace HexaColor.Server
             httpListener.Start();
             httpListener.BeginGetContext(OnHttpRequest, httpListener);
             Console.WriteLine("Service is up");
-            using (var timer = new Timer(OnTimer, null, 0, 100))
-                Console.ReadLine();
+            Console.ReadLine();
             httpListener.Stop();
-        }
-
-        private static void OnTimer(object state)
-        {
-            byte[] buffer;
-            Session[] tempSessions;
-            lock (SyncRoot)
-            {
-                string json = new JavaScriptSerializer().Serialize(game);
-                buffer = Encoding.UTF8.GetBytes(json);
-                tempSessions = sessions.ToArray();
-            }
-            foreach (var s in tempSessions)
-            {
-                s.WsContext.WebSocket.SendAsync(new ArraySegment<byte>(buffer),
-                WebSocketMessageType.Text, true, CancellationToken.None);
-            }
         }
 
         private static void OnHttpRequest(IAsyncResult ar)
@@ -58,7 +41,40 @@ namespace HexaColor.Server
             httpListener.BeginGetContext(OnHttpRequest, httpListener);
             if (context.Request.IsWebSocketRequest)
             {
-                HandleWebSocketClient(context);
+                //HandleWebSocketClient(context);
+                SimpleWebSocketClientHandle(context);
+            }
+        }
+
+        private static async void SimpleWebSocketClientHandle(HttpListenerContext context)
+        {
+            var ws = await context.AcceptWebSocketAsync(null);
+            var buffer = new byte[1000];
+            while (true)
+            {
+                var packet = await ws.WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), CancellationToken.None);
+
+                if (packet.MessageType == WebSocketMessageType.Close)
+                {
+                    //lock (SyncRoot)
+                    //    sessions.Remove(currentSession);
+                    break;
+                }
+
+                var cd = new JavaScriptSerializer().Deserialize<WsClientMessage>(Encoding.UTF8.GetString(buffer, 0, packet.Count));
+                Console.WriteLine(cd.Message);
+
+                //WsServerMessage response = new WsServerMessage
+                //{
+                //    Message = "Ok"
+                //};
+                //buffer = new byte[1000];
+                //string json = new JavaScriptSerializer().Serialize(response);
+                //buffer = Encoding.UTF8.GetBytes(json);
+                //await ws.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+
+                //lock (SyncRoot)
+                //    game.ProcessClientData(currentSession.Spaceship, cd);
             }
         }
 
