@@ -6,24 +6,53 @@
              xmlns:local="clr-namespace:HexaColor.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="Name: " />
-        <TextBox Grid.Row="0" Grid.Column="2" Width="100" />
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Size: " />
-        <TextBox Grid.Row="1" Grid.Column="2" Width="100" />
-        <Button Name="CancelBtn" Grid.Row="2" Grid.Column="1" Click="CancelBtn_Click" Content="Cancel" />
-        <Button Name="OkBtn" Grid.Row="2" Grid.Column="2" Click="OkBtn_Click" Content="Ok" />
-    </Grid>
+    <UserControl.Resources>
+        <Style x:Key="NotPressedColorBtnStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,5,5,5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Rectangle RadiusX="5" RadiusY="5" Width="30" Height="30" Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"></Rectangle>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PressedColorBtnStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,5,5,5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Rectangle RadiusX="5" RadiusY="5" Width="30" Height="30" Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"></Rectangle>
+                            <Ellipse Width="10" Height="10" Fill="Black" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+        <StackPanel.Resources>
+            <Style x:Key="PanelStyle" TargetType="{x:Type DockPanel}">
+                <Setter Property="Margin" Value="0,10,0,10" />
+            </Style>
+        </StackPanel.Resources>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Name: " />
+            <TextBox Grid.Row="0" Grid.Column="2" Width="100" HorizontalAlignment="Right" />
+        </DockPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="Size: " />
+            <TextBox Grid.Row="1" Grid.Column="2" Width="100" HorizontalAlignment="Right" />
+        </DockPanel>
+        <WrapPanel Name="ColorsPanel" Width="200">
+        </WrapPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <Button Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" />
+            <Button Name="OkBtn" Click="OkBtn_Click" Content="Ok" HorizontalAlignment="Right" />
+        </DockPanel>
+    </StackPanel>
 </UserControl>

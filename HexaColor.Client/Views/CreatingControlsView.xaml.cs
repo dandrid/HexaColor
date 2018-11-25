@@ -1,4 +1,5 @@
-﻿using HexaColor.Client.ViewModels;
+﻿using HexaColor.Client.Helpers;
+using HexaColor.Client.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace HexaColor.Client.Views
     /// </summary>
     public partial class CreatingControlsView : UserControl
     {
+        private List<Model.Color> chosenColors;
+
         private object RightPanelDataContext
         {
             set {
@@ -38,6 +41,36 @@ namespace HexaColor.Client.Views
         public CreatingControlsView()
         {
             InitializeComponent();
+
+            chosenColors = new List<Model.Color>();
+            InitColors();
+        }
+
+        private void InitColors()
+        {
+            foreach(var item in ColorMap.Items)
+            {
+                Button btn = new Button();
+                btn.Background = item.Value;
+                btn.Style = FindResource("NotPressedColorBtnStyle") as Style;
+                btn.Click += ColorBtn_Click;
+                ColorsPanel.Children.Add(btn);
+            }
+        }
+
+        private void ColorBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            Model.Color btnColor = ColorMap.Items.Where(c => c.Value.Equals(btn.Background)).First().Key;
+            if (chosenColors.Contains(btnColor))
+            {
+                chosenColors.Remove(btnColor);
+                btn.Style = FindResource("NotPressedColorBtnStyle") as Style;
+            } else
+            {
+                chosenColors.Add(btnColor);
+                btn.Style = FindResource("PressedColorBtnStyle") as Style;
+            }
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
