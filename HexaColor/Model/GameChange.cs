@@ -10,13 +10,32 @@ namespace HexaColor.Model
 
     public class ColorChange : GameChange
     {
-        public readonly Player player; // This can also be an ID if needed
         public readonly Color newColor;
 
-        public ColorChange(Player player, Color newColor)
+        public ColorChange(Color newColor)
         {
-            this.player = player;
             this.newColor = newColor;
+        }
+    }
+
+    public class JoinGame : GameChange
+    {
+        public readonly string playerName;
+    }
+
+    public class NewGame : GameChange
+    {
+        public readonly int playerNumber;
+        public readonly int usedColors;
+        public readonly int rows;
+        public readonly int columns;
+
+        public NewGame(int playerNumber, int usedColors, int rows, int columns)
+        {
+            this.playerNumber = playerNumber;
+            this.usedColors = usedColors;
+            this.rows = rows;
+            this.columns = columns;
         }
     }
 }

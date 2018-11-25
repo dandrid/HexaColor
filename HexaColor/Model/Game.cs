@@ -45,25 +45,28 @@ namespace HexaColor.Model
             return availableStartingPositions.Count == 0;
         }
 
-        public void handleChanges(GameChange change)
+        public List<GameUpdate> handleChanges(GameChange change, Player player)
         {
             if (change is ColorChange)
             {
                 ColorChange colorChange = (ColorChange)change;
-                mapLayout.changeContinousColors(colorChange.player.startingPosition, colorChange.newColor);
-
-                // Calculate next player
-                int nextPlayerIndex = (players.IndexOf(colorChange.player) + 1) % players.Count;
-                Player nextPlayer = players.ElementAt(nextPlayerIndex);
-
-                throw new NotImplementedException(); // TODO Send next player to client
+                mapLayout.changeContinousColors(player.startingPosition, colorChange.newColor);
             }
 
             if (isGameWon())
             {
                 calculatePoints();
-                throw new NotImplementedException(); // TODO Handle the game won, send to clients
+                //throw new NotImplementedException(); // TODO Handle the game won, send to clients
+                return new GameWon(...);
             }
+
+            // Calculate next player
+            // TODO check if player can choose color
+            int nextPlayerIndex = (players.IndexOf(player) + 1) % players.Count;
+            Player nextPlayer = players.ElementAt(nextPlayerIndex);
+
+            //throw new NotImplementedException(); // TODO Send next player to client
+            return new NextPlayer(player, ...);
         }
 
         public bool isGameWon()
@@ -106,6 +109,11 @@ namespace HexaColor.Model
                     throw new InvalidOperationException("Invalid state, game is not won!");
                 }
             }
+        }
+
+        public MapUpdate createMapUpdate()
+        {
+            return new MapUpdate(mapLayout, players);
         }
     }
 
