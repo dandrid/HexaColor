@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Color = HexaColor.Model.Color;
 
 namespace HexaColor.Client.Views
 {
@@ -24,13 +25,19 @@ namespace HexaColor.Client.Views
     {
         private Dictionary<Model.Color, Style> coloredStyles;
         private Point Q;
-        private readonly int mapSize = 7;   // example value, must be odd
+        private MapLayoutModel Model
+        {
+            get
+            {
+                return (Application.Current.MainWindow.FindName("LeftPanel") as ContentControl).DataContext as MapLayoutModel;
+            }
+        }
 
         private object LeftPanelDataContext
         {
             set
             {
-                (Window.GetWindow(this).FindName("LeftPanel") as ContentControl).DataContext = value;
+                (Application.Current.MainWindow.FindName("LeftPanel") as ContentControl).DataContext = value;
             }
         }
 
@@ -50,14 +57,13 @@ namespace HexaColor.Client.Views
 
         private void InitStyles()
         {
-            // example
             double canvasSize = 300.0;
 
             // trigonometry magic
-            int half = mapSize / 2;
-            double c = canvasSize / mapSize;
+            int half = Model.MapSize / 2;
+            double c = canvasSize / Model.MapSize;
             double d = (c / 2) / Math.Sin((60.0 / 180.0) * Math.PI);
-            double b = (canvasSize - (half + 1) * d) / mapSize;
+            double b = (canvasSize - (half + 1) * d) / Model.MapSize;
             double a = d + b;
             double e = d / 2.0;
             Point A = new Point(0.0, 0.0);
@@ -118,30 +124,28 @@ namespace HexaColor.Client.Views
 
         private void InitHexagons()
         {
-            for(int row = 0; row < mapSize; row++)
+            foreach (var item in Model.GameModel.mapLayout.cells)
             {
-                for(int col = 0; col < mapSize; col++)
+                int col = item.Key.columnCooridnate;
+                int row = item.Key.rowCooridnate;
+                Button hexagon = new Button();
+                hexagon.Style = coloredStyles[item.Value.color];
+                Canvas.SetLeft(hexagon, col * Q.X);
+                if (col % 2 == 1 && row == Model.MapSize - 1)
                 {
-                    Button hexagon = new Button();
-                    hexagon.Style = coloredStyles[Model.Color.COLOR_1];
-                    Canvas.SetLeft(hexagon, col * Q.X);
-                    if(col % 2 == 1 && row == mapSize - 1)
-                    {
-                        // skip this item
-                        continue;
-                    }
-                    else if (col % 2 == 1 && row != mapSize - 1)
-                    {
-                        Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y * 2.0);
-                    }
-                    else
-                    {
-                        Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y);
-                    }
-                    MapLayoutCanvas.Children.Add(hexagon);
+                    // skip this item 
+                    continue;
                 }
+                else if (col % 2 == 1 && row != Model.MapSize - 1)
+                {
+                    Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y * 2.0);
+                }
+                else
+                {
+                    Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y);
+                }
+                MapLayoutCanvas.Children.Add(hexagon);
             }
-
         }
     }
 }

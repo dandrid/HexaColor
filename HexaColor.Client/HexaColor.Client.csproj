@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Connections\IConnection.cs" />
+    <Compile Include="Connections\WebSocketConnection.cs" />
     <Compile Include="Helpers\ColorMap.cs" />
     <Compile Include="ViewModels\CreatingControlsModel.cs" />
     <Compile Include="ViewModels\EmptyMapLayoutModel.cs" />

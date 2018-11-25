@@ -24,7 +24,7 @@ namespace HexaColor.Client.Views
         {
             set
             {
-                (Window.GetWindow(this).FindName("LeftPanel") as ContentControl).DataContext = value;
+                (Application.Current.MainWindow.FindName("LeftPanel") as ContentControl).DataContext = value;
             }
         }
 

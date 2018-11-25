@@ -22,19 +22,18 @@ namespace HexaColor.Client.Views
     /// </summary>
     public partial class CreatingControlsView : UserControl
     {
-        private List<Model.Color> chosenColors;
-
         private object RightPanelDataContext
         {
-            set {
-                (Window.GetWindow(this).FindName("RightPanel") as ContentControl).DataContext = value;
+            set
+            {
+                (Application.Current.MainWindow.FindName("RightPanel") as ContentControl).DataContext = value;
             }
         }
         private object LeftPanelDataContext
         {
             set
             {
-                (Window.GetWindow(this).FindName("LeftPanel") as ContentControl).DataContext = value;
+                (Application.Current.MainWindow.FindName("LeftPanel") as ContentControl).DataContext = value;
             }
         }
 
@@ -83,8 +82,8 @@ namespace HexaColor.Client.Views
             string name = NameBox.Text;
             int.TryParse(ColorBox.Text, out int colorCnt);
             int.TryParse(SizeBox.Text, out int size);
-            LeftPanelDataContext = new MapLayoutModel();
-            MessageBox.Show(String.Format("Initialized Name: {0}, Color count: {1}, Map size: {2}", name, colorCnt, size));
+            LeftPanelDataContext = new MapLayoutModel(name, colorCnt, size);
+            //MessageBox.Show(String.Format("Initialized Name: {0}, Color count: {1}, Map size: {2}", name, colorCnt, size));
         }
     }
 }
