@@ -8,14 +8,14 @@ namespace HexaColor.Model
 {
     public class Game
     {
-        private MapLayout mapLayout;
-        private List<Player> players;
-        private Player nextPlayer;
-        private Queue<Position> availableStartingPositions;
+        public MapLayout mapLayout;
+        public List<Player> players;
+        public Player nextPlayer;
+        public Queue<Position> availableStartingPositions;
 
         public Game(int playerNumber, int usedColors, int rows, int columns)
         {
-            if (playerNumber != 2 || playerNumber != 4 || playerNumber != 8)
+            if (!(playerNumber == 2 || playerNumber == 4 || playerNumber == 8))
             {
                 throw new ArgumentException("Player size must be 2, 4 or 8.");
             }
