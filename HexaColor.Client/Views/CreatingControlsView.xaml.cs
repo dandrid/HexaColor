@@ -80,9 +80,10 @@ namespace HexaColor.Client.Views
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
             string name = NameBox.Text;
-            int.TryParse(ColorBox.Text, out int colorCnt);
-            int.TryParse(SizeBox.Text, out int size);
-            LeftPanelDataContext = new MapLayoutModel(name, colorCnt, size);
+            int.TryParse((PlayerBox.SelectedItem as ComboBoxItem).Content.ToString(), out int playerCnt);
+            int.TryParse((ColorBox.SelectedItem as ComboBoxItem).Content.ToString(), out int colorCnt);
+            int.TryParse((SizeBox.SelectedItem as ComboBoxItem).Content.ToString().Substring(0,1), out int size);
+            LeftPanelDataContext = new MapLayoutModel(name, playerCnt, colorCnt, size);
             //MessageBox.Show(String.Format("Initialized Name: {0}, Color count: {1}, Map size: {2}", name, colorCnt, size));
         }
     }

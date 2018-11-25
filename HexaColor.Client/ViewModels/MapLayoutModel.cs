@@ -11,6 +11,7 @@ namespace HexaColor.Client.ViewModels
     {
 
         public string MapName { get; private set; }
+        public int MapPlayerCount { get; set; }
         public int MapColorCount { get; private set; }
         public int MapSize { get; private set; }
 
@@ -18,13 +19,14 @@ namespace HexaColor.Client.ViewModels
 
         public WebSocketConnection Connection { get; private set; }
 
-        public MapLayoutModel(string mapName, int mapColorCount, int mapSize)
+        public MapLayoutModel(string mapName, int mapPlayerCount, int mapColorCount, int mapSize)
         {
             MapName = mapName;
+            MapPlayerCount = mapPlayerCount;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
             // TODO
-            GameModel = new Model.Game(2, mapColorCount, mapSize, mapSize);
+            GameModel = new Model.Game(mapPlayerCount, mapColorCount, mapSize, mapSize);
             //Connection = new WebSocketConnection();
             //InitMapLayout();
         }

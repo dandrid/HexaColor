@@ -42,15 +42,51 @@
         </StackPanel.Resources>
         <DockPanel Style="{StaticResource PanelStyle}">
             <TextBlock Text="Name: " />
-            <TextBox Name="NameBox" Width="100" HorizontalAlignment="Right" />
+            <TextBox Name="NameBox" Width="100" HorizontalAlignment="Right" Text="TestPlayer_1"/>
+        </DockPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Text="Player count: " />
+            <ComboBox Name="PlayerBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBoxItem Content="2" />
+                <ComboBoxItem Content="4" />
+                <ComboBoxItem Content="8" />
+            </ComboBox>
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
             <TextBlock Text="Color count: " />
-            <TextBox Name="ColorBox" Width="100" HorizontalAlignment="Right" />
+            <ComboBox Name="ColorBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBoxItem Content="4" />
+                <ComboBoxItem Content="5" />
+                <ComboBoxItem Content="6" />
+                <ComboBoxItem Content="7" />
+                <ComboBoxItem Content="8" />
+                <ComboBoxItem Content="9" />
+                <ComboBoxItem Content="10" />
+                <ComboBoxItem Content="11" />
+                <ComboBoxItem Content="12" />
+                <ComboBoxItem Content="13" />
+                <ComboBoxItem Content="14" />
+                <ComboBoxItem Content="15" />
+                <ComboBoxItem Content="16" />
+                <ComboBoxItem Content="17" />
+                <ComboBoxItem Content="18" />
+                <ComboBoxItem Content="19" />
+                <ComboBoxItem Content="20" />
+            </ComboBox>
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
             <TextBlock Text="Size: " />
-            <TextBox Name="SizeBox" Width="100" HorizontalAlignment="Right" />
+            <ComboBox Name="SizeBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBoxItem Content="3x3" />
+                <ComboBoxItem Content="5x5" />
+                <ComboBoxItem Content="7x7" />
+                <ComboBoxItem Content="9x9" />
+                <ComboBoxItem Content="11x11" />
+                <ComboBoxItem Content="13x13" />
+                <ComboBoxItem Content="15x15" />
+                <ComboBoxItem Content="17x17" />
+                <ComboBoxItem Content="19x19" />
+            </ComboBox>
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
             <Button Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" />
