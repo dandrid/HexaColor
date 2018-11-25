@@ -9,14 +9,19 @@
         mc:Ignorable="d"
         Title="HexaColor" Height="720" Width="1280">
     <Window.Resources>
+        <!-- Left panel templates -->
+        <DataTemplate DataType="{x:Type viewmodels:EmptyMapLayoutModel}">
+            <views:EmptyMapLayoutView DataContext="{Binding}" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:MapLayoutModel}">
+            <views:MapLayoutView DataContext="{Binding}" />
+        </DataTemplate>
+        <!-- Right panel templates -->
         <DataTemplate DataType="{x:Type viewmodels:CreatingControlsModel}">
             <views:CreatingControlsView DataContext="{Binding}" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:StartingControlsModel}">
             <views:StartingControlsView DataContext="{Binding}" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:MapLayoutModel}">
-            <views:MapLayoutView DataContext="{Binding}" />
         </DataTemplate>
     </Window.Resources>
     <Grid>

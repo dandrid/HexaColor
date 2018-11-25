@@ -1,5 +1,4 @@
-﻿using HexaColor.Client.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +16,10 @@ using System.Windows.Shapes;
 namespace HexaColor.Client.Views
 {
     /// <summary>
-    /// Interaction logic for CreatingControlsView.xaml
+    /// Interaction logic for EmptyMapLayoutView.xaml
     /// </summary>
-    public partial class CreatingControlsView : UserControl
+    public partial class EmptyMapLayoutView : UserControl
     {
-        private object RightPanelDataContext
-        {
-            set {
-                (Window.GetWindow(this).FindName("RightPanel") as ContentControl).DataContext = value;
-            }
-        }
         private object LeftPanelDataContext
         {
             set
@@ -35,19 +28,9 @@ namespace HexaColor.Client.Views
             }
         }
 
-        public CreatingControlsView()
+        public EmptyMapLayoutView()
         {
             InitializeComponent();
-        }
-
-        private void CancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            RightPanelDataContext = new StartingControlsModel();
-        }
-
-        private void OkBtn_Click(object sender, RoutedEventArgs e)
-        {
-            LeftPanelDataContext = new MapLayoutModel();
         }
     }
 }

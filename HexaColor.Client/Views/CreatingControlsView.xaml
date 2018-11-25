@@ -6,7 +6,24 @@
              xmlns:local="clr-namespace:HexaColor.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Name: " />
+        <TextBox Grid.Row="0" Grid.Column="2" Width="100" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Size: " />
+        <TextBox Grid.Row="1" Grid.Column="2" Width="100" />
+        <Button Name="CancelBtn" Grid.Row="2" Grid.Column="1" Click="CancelBtn_Click" Content="Cancel" />
+        <Button Name="OkBtn" Grid.Row="2" Grid.Column="2" Click="OkBtn_Click" Content="Ok" />
     </Grid>
 </UserControl>

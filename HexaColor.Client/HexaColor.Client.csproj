@@ -57,11 +57,15 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ColorMap.cs" />
     <Compile Include="ViewModels\CreatingControlsModel.cs" />
+    <Compile Include="ViewModels\EmptyMapLayoutModel.cs" />
     <Compile Include="ViewModels\MainWindowModel.cs" />
     <Compile Include="ViewModels\MapLayoutModel.cs" />
     <Compile Include="ViewModels\StartingControlsModel.cs" />
     <Compile Include="Views\CreatingControlsView.xaml.cs">
       <DependentUpon>CreatingControlsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EmptyMapLayoutView.xaml.cs">
+      <DependentUpon>EmptyMapLayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MapLayoutView.xaml.cs">
       <DependentUpon>MapLayoutView.xaml</DependentUpon>
@@ -70,6 +74,10 @@
       <DependentUpon>StartingControlsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CreatingControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EmptyMapLayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

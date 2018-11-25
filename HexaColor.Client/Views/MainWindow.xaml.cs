@@ -25,7 +25,7 @@ namespace HexaColor.Client
         {
             InitializeComponent();
             DataContext = new MainWindowModel();
-            LeftPanel.DataContext = new MapLayoutModel();
+            LeftPanel.DataContext = new EmptyMapLayoutModel();
             RightPanel.DataContext = new StartingControlsModel();
         }
     }

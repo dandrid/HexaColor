@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HexaColor.Client.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,14 @@ namespace HexaColor.Client.Views
     /// </summary>
     public partial class StartingControlsView : UserControl
     {
+        private object RightPanelDataContext
+        {
+            set
+            {
+                (Window.GetWindow(this).FindName("RightPanel") as ContentControl).DataContext = value;
+            }
+        }
+
         public StartingControlsView()
         {
             InitializeComponent();
@@ -27,7 +36,7 @@ namespace HexaColor.Client.Views
 
         private void CreateBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Created!");
+            RightPanelDataContext = new CreatingControlsModel();
         }
 
         private void ConnectBtn_Click(object sender, RoutedEventArgs e)

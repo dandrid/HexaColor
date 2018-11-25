@@ -26,6 +26,14 @@ namespace HexaColor.Client.Views
         private Point Q;
         private readonly int mapSize = 7;   // example value, must be odd
 
+        private object LeftPanelDataContext
+        {
+            set
+            {
+                (Window.GetWindow(this).FindName("LeftPanel") as ContentControl).DataContext = value;
+            }
+        }
+
         public MapLayoutView()
         {
             InitializeComponent();

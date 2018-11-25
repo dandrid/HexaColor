@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
     
-    <StackPanel Name="Panel" HorizontalAlignment="Center" VerticalAlignment="Top" Background="AliceBlue">
+    <StackPanel Name="Panel" HorizontalAlignment="Center" VerticalAlignment="Top">
         <Button Name="CreateBtn" Content="Create" Click="CreateBtn_Click" Margin="20"></Button>
         <Button Name="ConnectBtn" Content="Connect" Click="ConnectBtn_Click" Margin="20"></Button>
     </StackPanel>
