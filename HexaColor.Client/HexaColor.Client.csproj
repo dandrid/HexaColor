@@ -59,6 +59,7 @@
     <Compile Include="Connections\IConnection.cs" />
     <Compile Include="Connections\WebSocketConnection.cs" />
     <Compile Include="Helpers\ColorMap.cs" />
+    <Compile Include="ViewModels\AbstractViewModel.cs" />
     <Compile Include="ViewModels\CreatingControlsModel.cs" />
     <Compile Include="ViewModels\EmptyMapLayoutModel.cs" />
     <Compile Include="ViewModels\MainWindowModel.cs" />

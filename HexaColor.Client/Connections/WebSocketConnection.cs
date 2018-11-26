@@ -17,6 +17,9 @@ namespace HexaColor.Client.Connections
         private static Uri ConnectionUri = new Uri("ws://localhost:4280/HexaColor/");
         private ClientWebSocket webSocket;
 
+        public event EventHandler<GameErrorEventArgs> GameError;
+        public event EventHandler<MapUpdateEventArgs> MapUpdate;
+
         public WebSocketConnection()
         {
             webSocket = new ClientWebSocket();
@@ -100,6 +103,25 @@ namespace HexaColor.Client.Connections
         public class ServerDisconnectedException : Exception
         {
             public ServerDisconnectedException(string message) : base(message) { }
+        }
+    }
+
+    public class MapUpdateEventArgs : System.EventArgs
+    {
+        public readonly MapUpdate mapUpdate;
+
+        public MapUpdateEventArgs(MapUpdate mapUpdate)
+        {
+            this.mapUpdate = mapUpdate;
+        }
+    }
+    public class GameErrorEventArgs : System.EventArgs
+    {
+        public readonly GameError gameError;
+
+        public GameErrorEventArgs(GameError gameError)
+        {
+            this.gameError = gameError;
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace HexaColor.Client.ViewModels
 {
     public delegate void MapLayoutInitializedHandler();
-    public class MapLayoutModel
+    public class MapLayoutModel : AbstractViewModel
     {
         public string PlayerName { get; private set; }
         public int MapColorCount { get; private set; }
@@ -16,8 +16,6 @@ namespace HexaColor.Client.ViewModels
         public int PlayerNumber { get; private set; }
 
         public Model.Game GameModel { get; set; }
-
-        public WebSocketConnection Connection { get; private set; }
 
         public event MapLayoutInitializedHandler MapLayoutInitialized;
 
@@ -29,15 +27,15 @@ namespace HexaColor.Client.ViewModels
             MapSize = mapSize;
             // TODO
             //GameModel = new Model.Game(playerNumber, mapColorCount, mapSize, mapSize);
-            Connection = new WebSocketConnection();
-            Connection.StartListening();
+            WebSocketConnection.StartListening();
+            
             InitMapLayout();
         }
 
         public async void InitMapLayout()
         {
-            await Connection.Send(new Model.NewGame(PlayerNumber, MapColorCount, MapSize, MapSize));
-            await Connection.Send(new Model.JoinGame(PlayerName));
+            await WebSocketConnection.Send(new Model.NewGame(PlayerNumber, MapColorCount, MapSize, MapSize));
+            await WebSocketConnection.Send(new Model.JoinGame(PlayerName));
             // fire event
             //MapLayoutInitialized();
         }
