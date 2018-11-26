@@ -15,7 +15,7 @@ namespace HexaColor.Client.ViewModels
         public int MapSize { get; private set; }
         public int PlayerNumber { get; private set; }
 
-        public Model.Game GameModel { get; set; }
+        public Model.MapUpdate GameModel { get; set; }
 
         public event MapLayoutInitializedHandler MapLayoutInitialized;
 
@@ -28,8 +28,13 @@ namespace HexaColor.Client.ViewModels
             // TODO
             //GameModel = new Model.Game(playerNumber, mapColorCount, mapSize, mapSize);
             WebSocketConnection.StartListening();
-            
+            WebSocketConnection.MapUpdate += WebSocketConnection_MapUpdate;
             InitMapLayout();
+        }
+
+        private void WebSocketConnection_MapUpdate(object sender, MapUpdateEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public async void InitMapLayout()
