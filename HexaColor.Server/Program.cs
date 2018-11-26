@@ -1,5 +1,7 @@
 ﻿using HexaColor.Model;
 using HexaColor.Networking;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -183,7 +185,7 @@ namespace HexaColor.Server
             Session[] tempSessions;
             lock (SyncRoot)
             {
-                string json = new JavaScriptSerializer().Serialize(gameUpdate);
+                string json = JsonConvert.SerializeObject(gameUpdate, new KeyValuePairConverter());
                 buffer = Encoding.UTF8.GetBytes(json);
                 tempSessions = sessions.ToArray();
             }
