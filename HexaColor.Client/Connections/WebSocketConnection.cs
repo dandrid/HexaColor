@@ -20,7 +20,15 @@ namespace HexaColor.Client.Connections
         public WebSocketConnection()
         {
             webSocket = new ClientWebSocket();
-            webSocket.ConnectAsync(ConnectionUri, CancellationToken.None);
+            
+        }
+
+        public async Task Connect()
+        {
+            if (webSocket.State != WebSocketState.Open && webSocket.State != WebSocketState.Connecting)
+            {
+                await webSocket.ConnectAsync(ConnectionUri, CancellationToken.None);
+            }
         }
 
         public async Task Send(GameChange message)
@@ -33,6 +41,7 @@ namespace HexaColor.Client.Connections
 
         public async void StartListening()
         {
+            await Connect();
             var buffer = new byte[10000];
 
             // handle events from server
