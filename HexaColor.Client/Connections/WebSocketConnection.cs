@@ -57,47 +57,49 @@ namespace HexaColor.Client.Connections
                     throw new ServerDisconnectedException("Web socket is closed!");
                 }
 
-                MapUpdate mapUpdate = tryParseEvent<MapUpdate>(buffer, packet);
-                if (mapUpdate != null)
+                MapUpdate mapUpdate;
+                if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate))
                 {
                     // TODO map update
                     continue;
                 }
 
-                NextPlayer nextPlayer = tryParseEvent<NextPlayer>(buffer, packet);
-                if (nextPlayer != null)
+                NextPlayer nextPlayer;
+                if (tryParseEvent<NextPlayer>(buffer, packet, out nextPlayer))
                 {
                     // TODO handle next player
                     continue;
                 }
 
-                GameWon gameWon = tryParseEvent<GameWon>(buffer, packet);
-                if (gameWon != null)
+                GameWon gameWon;
+                if (tryParseEvent<GameWon>(buffer, packet, out gameWon))
                 {
                     // TODO handle game won
                     continue;
                 }
 
-                GameError gameError = tryParseEvent<GameError>(buffer, packet);
-                if (gameError != null)
+                GameError gameError;
+                if (tryParseEvent<GameError>(buffer, packet, out gameError))
                 {
                     // TODO handle game error
                     continue;
                 }
             }
         }
-        private EventType tryParseEvent<EventType>(byte[] buffer, WebSocketReceiveResult packet) where EventType : GameUpdate
+        private bool tryParseEvent<EventType>(byte[] buffer, WebSocketReceiveResult packet, out EventType gameUpdate) where EventType : GameUpdate
         {
             try
             {
                 EventType deserializedEvent = new JavaScriptSerializer().Deserialize<EventType>(Encoding.UTF8.GetString(buffer, 0, packet.Count));
-                return deserializedEvent;
+                gameUpdate = deserializedEvent;
+                return true;
             }
             catch (SystemException e)
             {
 
             }
-            return default(EventType);
+            gameUpdate = default(EventType);
+            return false;
         }
 
         public class ServerDisconnectedException : Exception
