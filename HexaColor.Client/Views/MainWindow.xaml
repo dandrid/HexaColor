@@ -23,6 +23,9 @@
         <DataTemplate DataType="{x:Type viewmodels:StartingControlsModel}">
             <views:StartingControlsView DataContext="{Binding}" />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:InGameControlsModel}">
+            <views:InGameControlsView DataContext="{Binding}" />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
