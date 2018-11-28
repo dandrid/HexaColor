@@ -69,31 +69,49 @@ namespace HexaColor.Model
 
         public HashSet<Color> getContinousNeighbourColors(Position position)
         {
-            return getContinousNeighbourColorsHelper(position, cells[position].color, new HashSet<Cell>(), new HashSet<Color>());
-        }
-
-        private HashSet<Color> getContinousNeighbourColorsHelper(Position position, Color startingColor, HashSet<Cell> visiteCells, HashSet<Color> differentColors)
-        {
-            Cell cell = cells[position];
-            if (cell.color != startingColor)
+            Color startingColor = cells[position].color;
+            HashSet<Color> differentColors = new HashSet<Color>();
+            Action<Position> getNeighbourColors = (pos) =>
             {
-                differentColors.Add(cell.color);
-            }
-            visiteCells.Add(cell);
-
-            List<Position> neighbourCellPositions = getNeighbourCellPositions(position);
-            foreach (Position neighbourCellPosition in neighbourCellPositions)
-            {
-                Cell neighbourCell = cells[neighbourCellPosition];
-                if (neighbourCell.color == startingColor && !visiteCells.Contains(neighbourCell))
+                foreach(Position neighbourPos in getNeighbourCellPositions(pos))
                 {
-                    getContinousNeighbourColorsHelper(position, startingColor, visiteCells, differentColors);
+                    if(cells[neighbourPos].color != startingColor)
+                    {
+                        differentColors.Add(cells[pos].color);
+                    }
                 }
-            }
+            };
+
+            visitContiniousNeighbours(getNeighbourColors, position);
             return differentColors;
         }
 
-        private List<Position> getNeighbourCellPositions(Position position)
+        public bool areColorNeighbours(Position one, Position other)
+        {
+            HashSet<Position> onePositionsAndNeighbours = new HashSet<Position>(); //
+            HashSet<Position> otherPositions = new HashSet<Position>();
+            visitContiniousNeighbours((pos) => 
+            {
+                onePositionsAndNeighbours.Add(pos);
+                foreach(Position neighbourPos in getNeighbourCellPositions(pos))
+                {
+                    onePositionsAndNeighbours.Add(neighbourPos);
+                }
+            }, one);
+            visitContiniousNeighbours((pos) => otherPositions.Add(pos), other);
+
+            //check if they have an intersection
+            foreach(Position otherPos in otherPositions)
+            {
+                if (onePositionsAndNeighbours.Add(otherPos) == false) // Position is already a neighbour of one, so they are color neighbours
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<Position> getNeighbourCellPositions(Position position)
         {
             var possibleNeighbourPositions = new List<Position>();
 
@@ -114,6 +132,27 @@ namespace HexaColor.Model
             }
             return actualNeighbourPositions;
             
+        }
+        private void visitContiniousNeighbours(Action<Position> action, Position position)
+        {
+            visitContiniousNeighbours(action, position, cells[position].color, new HashSet<Cell>());
+        }
+
+        private void visitContiniousNeighbours(Action<Position> action, Position position, Color startingColor, HashSet<Cell> visiteCells)
+        {
+            Cell cell = cells[position];
+            action(position);
+            visiteCells.Add(cell);
+
+            List<Position> neighbourCellPositions = getNeighbourCellPositions(position);
+            foreach (Position neighbourCellPosition in neighbourCellPositions)
+            {
+                Cell neighbourCell = cells[neighbourCellPosition];
+                if (neighbourCell.color == startingColor && !visiteCells.Contains(neighbourCell))
+                {
+                    visitContiniousNeighbours(action, position, startingColor, visiteCells);
+                }
+            }
         }
 
         private bool isValidPosition(Position position)
