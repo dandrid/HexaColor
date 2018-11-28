@@ -37,16 +37,20 @@ namespace HexaColor.Model
         public int usedColors { get; set; }
         public int rows { get; set; }
         public int columns { get; set; }
+        public int aiPlayerNumber { get; set; }
+        public AiDifficulty difficulty { get; set; }
 
 
         public NewGame() { }
 
-        public NewGame(int playerNumber, int usedColors, int rows, int columns)
+        public NewGame(int playerNumber, int aiPlayerNumber, AiDifficulty difficulty, int usedColors, int rows, int columns)
         {
             this.playerNumber = playerNumber;
             this.usedColors = usedColors;
             this.rows = rows;
             this.columns = columns;
+            this.aiPlayerNumber = aiPlayerNumber;
+            this.difficulty = difficulty;
         }
     }
 }

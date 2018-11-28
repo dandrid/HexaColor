@@ -133,7 +133,7 @@ namespace HexaColor.Model
             return actualNeighbourPositions;
             
         }
-        private void visitContiniousNeighbours(Action<Position> action, Position position)
+        public void visitContiniousNeighbours(Action<Position> action, Position position)
         {
             visitContiniousNeighbours(action, position, cells[position].color, new HashSet<Cell>());
         }

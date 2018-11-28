@@ -13,21 +13,28 @@ namespace HexaColor.Model
         public Player nextPlayer;
         public Queue<Position> availableStartingPositions;
 
-        public Game(int playerNumber, int usedColors, int rows, int columns)
+        public Game(NewGame parameters)
         {
-            if (!(playerNumber == 2 || playerNumber == 4 || playerNumber == 8))
+            int allPlayers = parameters.playerNumber + parameters.aiPlayerNumber;
+            if (!(allPlayers == 2 || allPlayers == 4 || allPlayers == 8))
             {
                 throw new ArgumentException("Player size must be 2, 4 or 8.");
             }
-            if (usedColors < playerNumber + 2 || 20 < usedColors)
+            if (parameters.usedColors < allPlayers + 2 || 20 < parameters.usedColors)
             {
                 throw new ArgumentException("Invalid color number!");
             }
             players = new List<Player>();
             nextPlayer = null;
 
-            mapLayout = new MapLayout(rows, columns, usedColors);
-            availableStartingPositions = mapLayout.getPlayerStartingPositions(playerNumber);
+            mapLayout = new MapLayout(parameters.rows, parameters.columns, parameters.usedColors);
+            availableStartingPositions = mapLayout.getPlayerStartingPositions(allPlayers);
+
+            for(int aiNumber = 1; aiNumber <= parameters.aiPlayerNumber; aiNumber++)
+            {
+                AiPlayer aiPlayer = new AiPlayer(parameters.difficulty, availableStartingPositions.Dequeue(), "AI player" + aiNumber);
+                players.Add(aiPlayer);
+            }
         }
 
         public Player addNewPlayer(string name = "default player name")
@@ -85,10 +92,22 @@ namespace HexaColor.Model
                         }
                     }
                 }
-                if (availableColors.Count != 0) // Player cannot choose, so we skipp it
+                if (availableColors.Count != 0) // If Player cannot choose, so we skipp it
                 {
                     nextPlayer = possibleNextPlayer;
-                    return new NextPlayer(nextPlayer, availableColors.ToList<Color>());
+                    if(nextPlayer is AiPlayer) // If the player is AI, we do its turn
+                    {
+                        AiPlayer aiPlayer = nextPlayer as AiPlayer;
+                        Color chosenColor = aiPlayer.chooseColor(mapLayout, availableColors);
+                        mapLayout.changeContinousColors(aiPlayer.startingPosition, chosenColor);
+
+                        i = 1; // Reset the cycle to find a next player
+                        player = aiPlayer;
+                    }
+                    else
+                    {
+                        return new NextPlayer(nextPlayer, availableColors.ToList<Color>());
+                    }
                 }
             }
 

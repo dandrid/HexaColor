@@ -94,7 +94,7 @@ namespace HexaColor.Server
                     lock (SyncRoot)
                     {
                         // Create a new game
-                        game = new Game(newGame.playerNumber, newGame.usedColors, newGame.rows, newGame.columns);
+                        game = new Game(newGame);
                     }
                 }
                 catch(ClientDisconnectedException e)

@@ -39,7 +39,7 @@ namespace HexaColor.Model
     public class GameWon : GameUpdate
     {
         /*
-         * Players ordered by the points. Index 0 is the first.
+         * Players ordered by the points. Index 0 is the last player.
         */
         public List<Player> players { get; set; }
 
