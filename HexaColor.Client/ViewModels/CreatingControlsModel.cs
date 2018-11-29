@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HexaColor.Client.ViewModels
 {
-    public class CreatingControlsModel
+    public class CreatingControlsModel : AbstractViewModel
     {
     }
 }
