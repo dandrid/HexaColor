@@ -55,13 +55,15 @@ namespace HexaColor.Server
         }
         private static async void HandleWebSocketClient(HttpListenerContext context)
         {
-            var ws = await context.AcceptWebSocketAsync(null);
-            var buffer = new byte[10000];
 
-            // wait for new game event, if the game is null
-            if (game == null)
+            Session currentSession = null;
+            try
             {
-                try
+                var ws = await context.AcceptWebSocketAsync(null);
+                var buffer = new byte[10000];
+
+                // wait for new game event, if the game is null
+                if (game == null)
                 {
                     NewGame newGame = await waitForEvent<NewGame>(ws, buffer);
                     lock (SyncRoot)
@@ -70,61 +72,61 @@ namespace HexaColor.Server
                         game = new Game(newGame);
                     }
                 }
-                catch(ClientDisconnectedException e)
-                {
-                    updatePlayers(new GameError(e));
-                    return;
-                }
-            }
 
-            // wait for player to join
-            Session currentSession;
-            JoinGame joinGameEvent;
-            try
-            {
-                joinGameEvent = await waitForEvent<JoinGame>(ws, buffer);
-            }
-            catch (ClientDisconnectedException e)
-            {
-                updatePlayers(new GameError(e));
-                return;
-            }
-            lock (SyncRoot)
-            {
-                // Add player to game
-                sessions.Add(currentSession = new Session(game.addNewPlayer(joinGameEvent.playerName), ws));
-            }
-            updatePlayers(game.createMapUpdate());
-
-            // handle game changes
-            while (true)
-            {
-                ColorChange playerChange;
-                try
-                {
-                    playerChange = await waitForEvent<ColorChange>(ws, buffer);
-                }
-                catch (ClientDisconnectedException e)
-                {
-                    sessions.Remove(currentSession);
-                    updatePlayers(new GameError(e));
-                    return;
-                }
+                // wait for player to join
+                JoinGame joinGameEvent = await waitForEvent<JoinGame>(ws, buffer);
                 lock (SyncRoot)
                 {
-                    try
-                    {
-                        GameUpdate gameUpdate = game.handleChanges(playerChange, currentSession.Player);
-                        updatePlayers(gameUpdate);
+                    // Add player to game
+                    sessions.Add(currentSession = new Session(game.addNewPlayer(joinGameEvent.playerName), ws));
+                }
+                updatePlayers(game.createMapUpdate());
 
-                        gameUpdate = game.createMapUpdate();
-                        updatePlayers(gameUpdate);
-
-                    }
-                    catch(Exception e)
+                // handle game changes
+                while (true)
+                {
+                    ColorChange playerChange;
+                    playerChange = await waitForEvent<ColorChange>(ws, buffer);
+                    lock (SyncRoot)
                     {
-                        updatePlayers(new GameError(e));
+                        try
+                        {
+                            GameUpdate gameUpdate = game.handleChanges(playerChange, currentSession.Player);
+                            updatePlayers(gameUpdate);
+
+                            gameUpdate = game.createMapUpdate();
+                            updatePlayers(gameUpdate);
+
+                        }
+                        catch (Exception e)
+                        {
+                            updatePlayers(new GameError(e));
+                        }
                     }
+                }
+            }
+            catch(ClientDisconnectedException e1)
+            {
+                if (currentSession != null)
+                {
+                    Console.WriteLine("Player disconnected: " + currentSession.Player.name);
+                    lock (SyncRoot)
+                    {
+                        sessions.Remove(currentSession);
+                    }
+                    updatePlayers(new GameError(e1));
+                }
+            }
+            catch (WebSocketException e2)
+            {
+                if (currentSession != null)
+                {
+                    Console.WriteLine("Player disconnected: " + currentSession.Player.name);
+                    lock (SyncRoot)
+                    {
+                        sessions.Remove(currentSession);
+                    }
+                    updatePlayers(new GameError(e2));
                 }
             }
         }
