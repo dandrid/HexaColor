@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,14 @@ namespace HexaColor.Model
 {
     public class MapLayout
     {
-        private int usedColors;
-        private int mapSize;
-        public Dictionary<Position, Cell> cells { get; internal set; }
+        public int usedColors { get; set; }
+        public int mapSize { get; set; }
+        public Dictionary<Position, Cell> cells { get; set; }
+
+        public MapLayout() // For serialization
+        {
+
+        }
 
         /**
          * Create a map with the given parameters, and initialize with random colors 

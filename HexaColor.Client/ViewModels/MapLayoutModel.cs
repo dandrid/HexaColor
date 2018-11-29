@@ -32,15 +32,14 @@ namespace HexaColor.Client.ViewModels
 
         private void WebSocketConnection_MapUpdate(object sender, MapUpdateEventArgs e)
         {
-            throw new NotImplementedException();
+            GameModel = e.mapUpdate;
+            MapLayoutInitialized();
         }
 
         public async void InitMapLayout()
         {
             await WebSocketConnection.Send(new Model.NewGame(PlayerNumber, 0, Model.AiDifficulty.EASY, MapColorCount, MapSize, MapSize));
             await WebSocketConnection.Send(new Model.JoinGame(PlayerName));
-            // fire event
-            //MapLayoutInitialized();
         }
     }
 

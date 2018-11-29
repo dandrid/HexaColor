@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using HexaColor.Model;
 using HexaColor.Networking;
+using Newtonsoft.Json;
 
 namespace HexaColor.Client.Connections
 {
@@ -60,7 +61,7 @@ namespace HexaColor.Client.Connections
                 MapUpdate mapUpdate;
                 if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate))
                 {
-                    // TODO map update
+                    MapUpdate.Invoke(this, new MapUpdateEventArgs(mapUpdate));
                     continue;
                 }
 
@@ -86,11 +87,15 @@ namespace HexaColor.Client.Connections
                 }
             }
         }
+
+
         private bool tryParseEvent<EventType>(byte[] buffer, WebSocketReceiveResult packet, out EventType gameUpdate) where EventType : GameUpdate
         {
             try
             {
-                EventType deserializedEvent = new JavaScriptSerializer().Deserialize<EventType>(Encoding.UTF8.GetString(buffer, 0, packet.Count));
+                string json = Encoding.UTF8.GetString(buffer, 0, packet.Count);
+                
+                EventType deserializedEvent = JsonConvert.DeserializeObject<EventType>(json);
                 gameUpdate = deserializedEvent;
                 return true;
             }
@@ -107,6 +112,21 @@ namespace HexaColor.Client.Connections
             public ServerDisconnectedException(string message) : base(message) { }
         }
     }
+    /*
+    public class PositionConverter : JsonConverter<Position>
+    {
+        public override void WriteJson(JsonWriter writer, Position value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString());
+        }
+
+        public override Position ReadJson(JsonReader reader, Type objectType, Position existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+            string s = (string)reader.Value;
+
+            return new Position(s);
+        }
+    }*/
 
     public class MapUpdateEventArgs : System.EventArgs
     {

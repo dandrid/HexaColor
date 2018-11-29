@@ -43,43 +43,16 @@ namespace HexaColor.Server
             httpListener.BeginGetContext(OnHttpRequest, httpListener);
             if (context.Request.IsWebSocketRequest)
             {
-                HandleWebSocketClient(context);
-                //SimpleWebSocketClientHandle(context);
-            }
-        }
-
-        private static async void SimpleWebSocketClientHandle(HttpListenerContext context)
-        {
-            var ws = await context.AcceptWebSocketAsync(null);
-            var buffer = new byte[1000];
-            while (true)
-            {
-                var packet = await ws.WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), CancellationToken.None);
-
-                if (packet.MessageType == WebSocketMessageType.Close)
+                try
                 {
-                    //lock (SyncRoot)
-                    //    sessions.Remove(currentSession);
-                    break;
+                    HandleWebSocketClient(context);
                 }
-
-                var cd = new JavaScriptSerializer().Deserialize<WsClientMessage>(Encoding.UTF8.GetString(buffer, 0, packet.Count));
-                Console.WriteLine(cd.Message);
-
-                //WsServerMessage response = new WsServerMessage
-                //{
-                //    Message = "Ok"
-                //};
-                //buffer = new byte[1000];
-                //string json = new JavaScriptSerializer().Serialize(response);
-                //buffer = Encoding.UTF8.GetBytes(json);
-                //await ws.WebSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-
-                //lock (SyncRoot)
-                //    game.ProcessClientData(currentSession.Spaceship, cd);
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
-
         private static async void HandleWebSocketClient(HttpListenerContext context)
         {
             var ws = await context.AcceptWebSocketAsync(null);
@@ -169,7 +142,8 @@ namespace HexaColor.Server
 
                 try
                 {
-                    EventType deserializedEvent = new JavaScriptSerializer().Deserialize<EventType>(Encoding.UTF8.GetString(buffer, 0, packet.Count));
+                    string text = Encoding.UTF8.GetString(buffer, 0, packet.Count);
+                    EventType deserializedEvent = new JavaScriptSerializer().Deserialize<EventType>(text);
                     return deserializedEvent;
                 }
                 catch (SystemException e)
