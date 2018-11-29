@@ -11,23 +11,26 @@ namespace HexaColor.Client.ViewModels
     public delegate void MapLayoutInitializedHandler();
     public class MapLayoutModel : AbstractViewModel
     {
+        private int playerCount;
+        private int aiCount;
+        private List<KeyValuePair<string, AiDifficulty>> list;
+
         public string PlayerName { get; private set; }
         public int MapColorCount { get; private set; }
         public int MapSize { get; private set; }
         public int HumanPlayerNumber { get; private set; }
-        public int AIPlayerNumber { get; private set; }
-        public AiDifficulty AIDifficulty { get; private set; }
+        public List<KeyValuePair<string, AiDifficulty>> AIPlayers { get; private set; }
 
         public Model.MapUpdate GameModel { get; set; }
 
         public event MapLayoutInitializedHandler MapLayoutInitialized;
 
-        public MapLayoutModel(string playerName, int playerNumber, int aiPlayerNumber, AiDifficulty aiDifficulyt, int mapColorCount, int mapSize)
+
+        public MapLayoutModel(string playerName, int playerNumber, List<KeyValuePair<string, AiDifficulty>> aiPlayers, int mapColorCount, int mapSize)
         {
             PlayerName = playerName;
             HumanPlayerNumber = playerNumber;
-            AIPlayerNumber = aiPlayerNumber;
-            AIDifficulty = aiDifficulyt;
+            AIPlayers = aiPlayers;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
 
@@ -43,7 +46,7 @@ namespace HexaColor.Client.ViewModels
 
         public async void InitMapLayout()
         {
-            await WebSocketConnection.Send(new Model.NewGame(HumanPlayerNumber - AIPlayerNumber, AIPlayerNumber, AIDifficulty, MapColorCount, MapSize, MapSize));
+            await WebSocketConnection.Send(new Model.NewGame(HumanPlayerNumber - AIPlayers.Count, AIPlayers, MapColorCount, MapSize, MapSize));
             await WebSocketConnection.Send(new Model.JoinGame(PlayerName));
         }
     }

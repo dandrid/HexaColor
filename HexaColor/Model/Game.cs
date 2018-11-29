@@ -15,7 +15,7 @@ namespace HexaColor.Model
 
         public Game(NewGame parameters)
         {
-            int allPlayers = parameters.playerNumber + parameters.aiPlayerNumber;
+            int allPlayers = parameters.playerNumber + parameters.aiPlayers.Count;
             if (!(allPlayers == 2 || allPlayers == 4 || allPlayers == 8))
             {
                 throw new ArgumentException("Player size must be 2, 4 or 8.");
@@ -30,9 +30,9 @@ namespace HexaColor.Model
             mapLayout = new MapLayout(parameters.rows, parameters.columns, parameters.usedColors);
             availableStartingPositions = mapLayout.getPlayerStartingPositions(allPlayers);
 
-            for(int aiNumber = 1; aiNumber <= parameters.aiPlayerNumber; aiNumber++)
+            foreach(var aiConfig in parameters.aiPlayers)
             {
-                AiPlayer aiPlayer = new AiPlayer(parameters.difficulty, availableStartingPositions.Dequeue(), "AI player" + aiNumber);
+                AiPlayer aiPlayer = new AiPlayer(aiConfig.Value, availableStartingPositions.Dequeue(), aiConfig.Key);
                 players.Add(aiPlayer);
             }
         }

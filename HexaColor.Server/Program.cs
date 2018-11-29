@@ -143,7 +143,7 @@ namespace HexaColor.Server
                 try
                 {
                     string text = Encoding.UTF8.GetString(buffer, 0, packet.Count);
-                    EventType deserializedEvent = new JavaScriptSerializer().Deserialize<EventType>(text);
+                    EventType deserializedEvent = JsonConvert.DeserializeObject<EventType>(text);
                     return deserializedEvent;
                 }
                 catch (SystemException e)

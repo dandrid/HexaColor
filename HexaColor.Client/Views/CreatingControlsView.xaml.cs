@@ -56,10 +56,9 @@ namespace HexaColor.Client.Views
             string playerName = PlayerNameBox.Text;
             int playerCount = int.Parse((PlayerCountBox.SelectedItem as ComboBoxItem).Tag.ToString());
             int aiCount = int.Parse((AICountBox.SelectedItem as ComboBoxItem).Tag.ToString());
-            Dictionary<string, AiDifficulty> aiDifficulties = null;
-            if(aiCount > 0)
+            Dictionary<string, AiDifficulty> aiDifficulties = new Dictionary<string, AiDifficulty>();
+            if (aiCount > 0)
             {
-                aiDifficulties = new Dictionary<string, AiDifficulty>();
                 foreach (var panel in AIPlayersPanel.Children.OfType<DockPanel>())
                 {
                     string aiId = panel.Children.OfType<TextBlock>().First().Text;
@@ -69,10 +68,8 @@ namespace HexaColor.Client.Views
                     aiDifficulties.Add(aiId, aiDifficulty);
                 }
             }
-            // TODO pass each difficulty
-            AiDifficulty difficulty = aiDifficulties == null ? AiDifficulty.EASY : aiDifficulties.ElementAt(0).Value;             
-
-            MapLayoutModel mapLayoutModel = new MapLayoutModel(playerName, playerCount, aiCount, difficulty, mapColorCount, mapSize);
+            
+            MapLayoutModel mapLayoutModel = new MapLayoutModel(playerName, playerCount, aiDifficulties.ToList(), mapColorCount, mapSize);
             mapLayoutModel.InitMapLayout();
             LeftPanelDataContext = mapLayoutModel;
         }

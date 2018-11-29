@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using HexaColor.Model;
 using HexaColor.Networking;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HexaColor.Client.Connections
 {
@@ -38,7 +39,7 @@ namespace HexaColor.Client.Connections
         public async Task Send(GameChange message)
         {
             byte[] buffer;
-            string json = new JavaScriptSerializer().Serialize(message);
+            string json = JsonConvert.SerializeObject(message, new KeyValuePairConverter());
             buffer = Encoding.UTF8.GetBytes(json);
             await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
