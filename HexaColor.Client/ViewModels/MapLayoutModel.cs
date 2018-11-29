@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HexaColor.Client.ViewModels
 {
-    public delegate void MapLayoutInitializedHandler();
+    public delegate void MapLayoutUpdatedHandler();
     public class MapLayoutModel : AbstractViewModel
     {
         private int playerCount;
@@ -23,7 +23,7 @@ namespace HexaColor.Client.ViewModels
 
         public Model.MapUpdate GameModel { get; set; }
 
-        public event MapLayoutInitializedHandler MapLayoutInitialized;
+        public event MapLayoutUpdatedHandler MapLayoutUpdatedEvent;
 
 
         public MapLayoutModel(string playerName, int playerNumber, List<KeyValuePair<string, AiDifficulty>> aiPlayers, int mapColorCount, int mapSize)
@@ -35,13 +35,13 @@ namespace HexaColor.Client.ViewModels
             MapSize = mapSize;
 
             WebSocketConnection.StartListening();
-            WebSocketConnection.MapUpdate += WebSocketConnection_MapUpdate;
+            WebSocketConnection.MapUpdatEvent += WebSocketConnection_MapUpdate;
         }
 
         private void WebSocketConnection_MapUpdate(object sender, MapUpdateEventArgs e)
         {
             GameModel = e.mapUpdate;
-            MapLayoutInitialized();
+            MapLayoutUpdatedEvent();
         }
 
         public async void InitMapLayout()

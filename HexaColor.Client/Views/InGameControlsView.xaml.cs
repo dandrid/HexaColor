@@ -1,4 +1,5 @@
 ﻿using HexaColor.Client.Helpers;
+using HexaColor.Client.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,15 +24,30 @@ namespace HexaColor.Client.Views
     {
         private Button[] colorButtons;
 
+        private InGameControlsModel Model
+        {
+            get
+            {
+                return (Application.Current.MainWindow.FindName("RightPanel") as ContentControl).DataContext as InGameControlsModel;
+            }
+        }
+
         public InGameControlsView()
         {
             InitializeComponent();
             InitColors();
+            Model.NextPlayerEvent += Model_NextPlayerEvent;
+        }
+
+        private void Model_NextPlayerEvent()
+        {
+            MessageBox.Show("Your turn.");
+            EnableleColorButtons(Model.AvailableColors);
         }
 
         private void InitColors()
         {
-            colorButtons = (ChangeBtn.Parent as Grid).Children.OfType<Button>().Where(b => Grid.GetRow(b) > 0).ToArray();
+            colorButtons = (ChangeBtn.Parent as Grid).Children.OfType<Button>().Where(b => Grid.GetRow(b) < 4).ToArray();
             if(colorButtons.Count() != ColorMap.Items.Count)
             {
                 throw new Exception("Model-view mismatch. There are less or more model elements than visual elements.");
@@ -51,12 +67,15 @@ namespace HexaColor.Client.Views
             }
         }
 
-        private void EnableleColorButtons()
+        private void EnableleColorButtons(List<Model.Color> availableColors)
         {
             for (int i = 0; i < colorButtons.Count(); i++)
             {
-                colorButtons[i].Background = ColorMap.Items.ElementAt(i).Value;
-                colorButtons[i].IsEnabled = true;
+                if (availableColors.Contains(ColorMap.Items.ElementAt(i).Key))
+                {
+                    colorButtons[i].Background = ColorMap.Items.ElementAt(i).Value;
+                    colorButtons[i].IsEnabled = true;
+                }
             }
         }
 
@@ -70,7 +89,7 @@ namespace HexaColor.Client.Views
         private void SkipBtn_Click(object sender, RoutedEventArgs e)
         {
             // TODO
-            EnableleColorButtons();
+            EnableleColorButtons(Model.AvailableColors);
             MessageBox.Show("Skip");
         }
 

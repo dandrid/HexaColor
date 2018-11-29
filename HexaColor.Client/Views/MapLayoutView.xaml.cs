@@ -44,14 +44,17 @@ namespace HexaColor.Client.Views
         public MapLayoutView()
         {
             InitializeComponent();
-            Model.MapLayoutInitialized += Model_MapLayoutInitialized;   
+            Model.MapLayoutUpdatedEvent += Model_MapLayoutUpdated;   
         }
 
-        private void Model_MapLayoutInitialized()
+        private void Model_MapLayoutUpdated()
         {
-            InitStyles();
-            InitCanvas();
-            InitHexagons();
+            if(coloredStyles == null || coloredStyles.Count == 0)
+            {
+                InitStyles();
+                InitCanvas();
+            }
+            DrawHexagons();
         }
 
         private void InitCanvas()
@@ -135,8 +138,9 @@ namespace HexaColor.Client.Views
             }
         }
 
-        private void InitHexagons()
+        private void DrawHexagons()
         {
+            MapLayoutCanvas.Children.Clear();
             foreach (var item in Model.GameModel.mapLayout.cells)
             {
                 int col = item.Key.columnCooridnate;

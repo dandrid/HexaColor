@@ -72,6 +72,7 @@ namespace HexaColor.Client.Views
             MapLayoutModel mapLayoutModel = new MapLayoutModel(playerName, playerCount, aiDifficulties.ToList(), mapColorCount, mapSize);
             mapLayoutModel.InitMapLayout();
             LeftPanelDataContext = mapLayoutModel;
+            RightPanelDataContext = new InGameControlsModel(playerName);
         }
 
         private void PlayerCountBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

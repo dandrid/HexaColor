@@ -19,8 +19,9 @@ namespace HexaColor.Client.Connections
         private static Uri ConnectionUri = new Uri("ws://localhost:4280/HexaColor/");
         private ClientWebSocket webSocket;
 
-        public event EventHandler<GameErrorEventArgs> GameError;
-        public event EventHandler<MapUpdateEventArgs> MapUpdate;
+        public event EventHandler<GameErrorEventArgs> GameErrorEvent;
+        public event EventHandler<MapUpdateEventArgs> MapUpdatEvent;
+        public event EventHandler<NextPlayerEventArgs> NextPlayerEvent;
 
         public WebSocketConnection()
         {
@@ -62,14 +63,14 @@ namespace HexaColor.Client.Connections
                 MapUpdate mapUpdate;
                 if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate))
                 {
-                    MapUpdate.Invoke(this, new MapUpdateEventArgs(mapUpdate));
+                    MapUpdatEvent.Invoke(this, new MapUpdateEventArgs(mapUpdate));
                     continue;
                 }
 
                 NextPlayer nextPlayer;
                 if (tryParseEvent<NextPlayer>(buffer, packet, out nextPlayer))
                 {
-                    // TODO handle next player
+                    NextPlayerEvent(this, new NextPlayerEventArgs(nextPlayer));
                     continue;
                 }
 
@@ -145,6 +146,15 @@ namespace HexaColor.Client.Connections
         public GameErrorEventArgs(GameError gameError)
         {
             this.gameError = gameError;
+        }
+    }
+    public class NextPlayerEventArgs : System.EventArgs
+    {
+        public readonly NextPlayer nextPlayer;
+
+        public NextPlayerEventArgs(NextPlayer nextPlayer)
+        {
+            this.nextPlayer = nextPlayer;
         }
     }
 }
