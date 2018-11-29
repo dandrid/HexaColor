@@ -83,11 +83,12 @@ namespace HexaColor.Client.Views
             coloredStyles = new Dictionary<Model.Color, Style>();
             foreach (var item in ColorMap.Items)
             {
-                FrameworkElementFactory elementFactory = new FrameworkElementFactory(typeof(Path));
-                elementFactory.SetValue(Path.FillProperty, item.Value);
-                elementFactory.SetValue(Path.StrokeProperty, Brushes.Black);
-                elementFactory.SetValue(Path.StrokeThicknessProperty, 0.1);
-                elementFactory.SetValue(Path.DataProperty, new PathGeometry
+                FrameworkElementFactory rootElement = new FrameworkElementFactory(typeof(Grid));
+                FrameworkElementFactory pathElementFactory = new FrameworkElementFactory(typeof(Path));
+                pathElementFactory.SetValue(Path.FillProperty, item.Value);
+                pathElementFactory.SetValue(Path.StrokeProperty, Brushes.Black);
+                pathElementFactory.SetValue(Path.StrokeThicknessProperty, 0.1);
+                pathElementFactory.SetValue(Path.DataProperty, new PathGeometry
                 {
                     Figures =
                 {
@@ -107,9 +108,16 @@ namespace HexaColor.Client.Views
                     }
                 }
                 });
+                FrameworkElementFactory contentPresenterElementFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+                contentPresenterElementFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
+                contentPresenterElementFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Top);
+
+                rootElement.AppendChild(pathElementFactory);
+                rootElement.AppendChild(contentPresenterElementFactory);
 
                 ControlTemplate controlTemplate = new ControlTemplate();
-                controlTemplate.VisualTree = elementFactory;
+                controlTemplate.TargetType = typeof(Button);
+                controlTemplate.VisualTree = rootElement;
 
                 Style hexagonStyle = new Style
                 {
@@ -148,6 +156,11 @@ namespace HexaColor.Client.Views
                 else
                 {
                     Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y);
+                }
+                Model.Player player = Model.GameModel.players.Where(p => p.startingPosition.columnCooridnate == col && p.startingPosition.rowCooridnate == row).FirstOrDefault();
+                if(player != null)
+                {
+                    hexagon.Content = player.name;
                 }
                 MapLayoutCanvas.Children.Add(hexagon);
             }

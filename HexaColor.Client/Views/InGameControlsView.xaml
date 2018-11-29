@@ -22,13 +22,14 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition Height="120" />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -40,8 +41,13 @@
             <ColumnDefinition />
             <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
-        <Button  Name="ChangeBtn" Content="Change" Style="{StaticResource ActionBtnStyle}" Click="ChangeBtn_Click" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" IsEnabled="False" />
-        <Button Name="SkipBtn" Content="Skip" Style="{StaticResource ActionBtnStyle}" Background="WhiteSmoke" Click="SkipBtn_Click" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" />
+        <Button Name="SkipBtn" Content="Skip" Style="{StaticResource ActionBtnStyle}" Background="WhiteSmoke" Click="SkipBtn_Click" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" />
+        <Button  Name="ChangeBtn" Content="Change" Style="{StaticResource ActionBtnStyle}" Click="ChangeBtn_Click" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="4" IsEnabled="False" />
+        <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
+        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
+        <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
+        <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
+        <Button Grid.Row="0" Grid.Column="5" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
         <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
         <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
         <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
@@ -57,11 +63,6 @@
         <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
         <Button Grid.Row="3" Grid.Column="4" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
         <Button Grid.Row="3" Grid.Column="5" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
-        <Button Grid.Row="4" Grid.Column="1" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
-        <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
-        <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
-        <Button Grid.Row="4" Grid.Column="4" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
-        <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource ColorBtnStyle}" Click="ColorBtn_Click" />
 
     </Grid>
 </UserControl>

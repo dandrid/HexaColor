@@ -12,28 +12,31 @@
                 <Style x:Key="HexagonStlye" TargetType="{x:Type Button}">
                     <Setter Property="Control.Template">
                         <Setter.Value>
-                            <ControlTemplate>
-                                <Path Name="HexagonPath" Fill="Red">
-                                    <Path.Data>
-                                        <PathGeometry>
-                                            <PathGeometry.Figures>
-                                                <PathFigure StartPoint="0,0" IsClosed="True" IsFilled="True">
-                                                    <PathFigure.Segments>
-                                                        <LineSegment Point="50,0" />
-                                                        <LineSegment Point="50,50" />
-                                                        <LineSegment Point="0,50" />
-                                                    </PathFigure.Segments>
-                                                </PathFigure>
-                                            </PathGeometry.Figures>
-                                        </PathGeometry>
-                                    </Path.Data>
-                                </Path>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid>
+                                    <Path Name="HexagonPath" Fill="Red">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathGeometry.Figures>
+                                                    <PathFigure StartPoint="0,0" IsClosed="True" IsFilled="True">
+                                                        <PathFigure.Segments>
+                                                            <LineSegment Point="50,0" />
+                                                            <LineSegment Point="50,50" />
+                                                            <LineSegment Point="0,50" />
+                                                        </PathFigure.Segments>
+                                                    </PathFigure>
+                                                </PathGeometry.Figures>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </Canvas.Resources>
-            <Button Canvas.Left="0" Canvas.Top="0" Style="{StaticResource HexagonStlye}"></Button>-->
+            <Button Canvas.Left="0" Canvas.Top="0" Style="{StaticResource HexagonStlye}" Content="content"></Button>-->
 
         </Canvas>
     </Viewbox>

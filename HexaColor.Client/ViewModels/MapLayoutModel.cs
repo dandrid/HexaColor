@@ -43,7 +43,7 @@ namespace HexaColor.Client.ViewModels
 
         public async void InitMapLayout()
         {
-            await WebSocketConnection.Send(new Model.NewGame(HumanPlayerNumber, AIPlayerNumber, AIDifficulty, MapColorCount, MapSize, MapSize));
+            await WebSocketConnection.Send(new Model.NewGame(HumanPlayerNumber - AIPlayerNumber, AIPlayerNumber, AIDifficulty, MapColorCount, MapSize, MapSize));
             await WebSocketConnection.Send(new Model.JoinGame(PlayerName));
         }
     }
