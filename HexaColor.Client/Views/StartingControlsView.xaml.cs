@@ -43,7 +43,8 @@ namespace HexaColor.Client.Views
 
         private void ConnectBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Connect");
+            //MessageBox.Show("Connect");
+            RightPanelDataContext = new InGameControlsModel();
         }
     }
 }
