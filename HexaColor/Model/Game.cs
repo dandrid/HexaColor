@@ -44,9 +44,22 @@ namespace HexaColor.Model
                 Position startingPosition = availableStartingPositions.Dequeue();
                 Player newPlayer = new Player(startingPosition, name);
                 players.Add(newPlayer);
+                if(availableStartingPositions.Count == 0)
+                {
+                    nextPlayer = newPlayer;
+                }
                 return newPlayer;
             }
             throw new InvalidOperationException(string.Format("All player slots are filled! Current players: {0}", players.Count));
+        }
+
+        public GameUpdate getNextPlayer()
+        {
+            if(nextPlayer != null)
+            {
+                return new NextPlayer(nextPlayer, getAvailableColors(nextPlayer).ToList());
+            }
+            return null;
         }
 
         public bool isGameFull()
@@ -77,21 +90,7 @@ namespace HexaColor.Model
                 int nextPlayerIndex = (players.IndexOf(player) + i) % players.Count;
                 Player possibleNextPlayer = players.ElementAt(nextPlayerIndex);
 
-                HashSet<Color> availableColors = mapLayout.getContinousNeighbourColors(possibleNextPlayer.startingPosition);
-                foreach(Player p in players) // Do not allow the color of the other player, if they are neighbours
-                {
-                    if(p != possibleNextPlayer)
-                    {
-                        Color playerColor = mapLayout.cells[p.startingPosition].color;
-                        if (availableColors.Contains(playerColor))
-                        {
-                            if(mapLayout.areColorNeighbours(possibleNextPlayer.startingPosition, p.startingPosition))
-                            {
-                                availableColors.Remove(playerColor);
-                            }
-                        }
-                    }
-                }
+                HashSet<Color> availableColors = getAvailableColors(possibleNextPlayer);
                 if (availableColors.Count != 0) // If Player cannot choose, so we skipp it
                 {
                     nextPlayer = possibleNextPlayer;
@@ -114,6 +113,26 @@ namespace HexaColor.Model
             // Game is won
             calculatePoints();
             return new GameWon(players.OrderBy(p => p.points).ToList());
+        }
+
+        private HashSet<Color> getAvailableColors(Player player)
+        {
+            HashSet<Color> availableColors = mapLayout.getContinousNeighbourColors(player.startingPosition);
+            foreach (Player p in players) // Do not allow the color of the other player, if they are neighbours
+            {
+                if (p != player)
+                {
+                    Color playerColor = mapLayout.cells[p.startingPosition].color;
+                    if (availableColors.Contains(playerColor))
+                    {
+                        if (mapLayout.areColorNeighbours(player.startingPosition, p.startingPosition))
+                        {
+                            availableColors.Remove(playerColor);
+                        }
+                    }
+                }
+            }
+            return availableColors;
         }
 
         public bool isGameWon()

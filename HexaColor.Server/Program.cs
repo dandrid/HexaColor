@@ -81,7 +81,10 @@ namespace HexaColor.Server
                     sessions.Add(currentSession = new Session(game.addNewPlayer(joinGameEvent.playerName), ws));
                 }
                 updatePlayers(game.createMapUpdate());
-
+                lock (SyncRoot)
+                {
+                    updatePlayers(game.getNextPlayer());
+                }
                 // handle game changes
                 while (true)
                 {
@@ -157,20 +160,22 @@ namespace HexaColor.Server
 
         private static void updatePlayers(GameUpdate gameUpdate)
         {
-            byte[] buffer;
-            Session[] tempSessions;
-            lock (SyncRoot)
+            if(gameUpdate != null)
             {
-                string json = JsonConvert.SerializeObject(gameUpdate, new KeyValuePairConverter());
-                buffer = Encoding.UTF8.GetBytes(json);
-                tempSessions = sessions.ToArray();
+                byte[] buffer;
+                Session[] tempSessions;
+                lock (SyncRoot)
+                {
+                    string json = JsonConvert.SerializeObject(gameUpdate, new KeyValuePairConverter());
+                    buffer = Encoding.UTF8.GetBytes(json);
+                    tempSessions = sessions.ToArray();
+                }
+                foreach (var s in tempSessions)
+                {
+                    s.WsContext.WebSocket.SendAsync(new ArraySegment<byte>(buffer),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+                }
             }
-            foreach (var s in tempSessions)
-            {
-                s.WsContext.WebSocket.SendAsync(new ArraySegment<byte>(buffer),
-                WebSocketMessageType.Text, true, CancellationToken.None);
-            }
-
         }
 
         public class ClientDisconnectedException : Exception

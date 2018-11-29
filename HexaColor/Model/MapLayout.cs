@@ -157,7 +157,7 @@ namespace HexaColor.Model
                 Cell neighbourCell = cells[neighbourCellPosition];
                 if (neighbourCell.color == startingColor && !visiteCells.Contains(neighbourCell))
                 {
-                    visitContiniousNeighbours(action, position, startingColor, visiteCells);
+                    visitContiniousNeighbours(action, neighbourCellPosition, startingColor, visiteCells);
                 }
             }
         }
