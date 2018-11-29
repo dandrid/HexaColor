@@ -25,8 +25,7 @@ namespace HexaColor.Client.ViewModels
             PlayerNumber = playerNumber;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
-            // TODO
-            //GameModel = new Model.Game(playerNumber, mapColorCount, mapSize, mapSize);
+
             WebSocketConnection.StartListening();
             WebSocketConnection.MapUpdate += WebSocketConnection_MapUpdate;
             InitMapLayout();
@@ -39,7 +38,7 @@ namespace HexaColor.Client.ViewModels
 
         public async void InitMapLayout()
         {
-            await WebSocketConnection.Send(new Model.NewGame(PlayerNumber, MapColorCount, MapSize, MapSize));
+            await WebSocketConnection.Send(new Model.NewGame(PlayerNumber, 0, Model.AiDifficulty.EASY, MapColorCount, MapSize, MapSize));
             await WebSocketConnection.Send(new Model.JoinGame(PlayerName));
             // fire event
             //MapLayoutInitialized();
