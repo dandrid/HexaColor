@@ -45,11 +45,32 @@
             <TextBox Name="NameBox" Width="100" HorizontalAlignment="Right" Text="TestPlayer_1"/>
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="Player count: " />
+            <TextBlock Text="All player count: " />
             <ComboBox Name="PlayerBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
                 <ComboBoxItem Content="2" />
                 <ComboBoxItem Content="4" />
                 <ComboBoxItem Content="8" />
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Text="AI player count: " />
+            <ComboBox Name="AIBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBoxItem Content="1" />
+                <ComboBoxItem Content="2" />
+                <ComboBoxItem Content="3" />
+                <ComboBoxItem Content="4" />
+                <ComboBoxItem Content="5" />
+                <ComboBoxItem Content="6" />
+                <ComboBoxItem Content="7" />
+                <ComboBoxItem Content="8" />
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Style="{StaticResource PanelStyle}">
+            <TextBlock Text="AI difficulty: " />
+            <ComboBox Name="AIDifficulty" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBoxItem Content="EASY" />
+                <ComboBoxItem Content="MEDIUM" />
+                <ComboBoxItem Content="HARD" />
             </ComboBox>
         </DockPanel>
         <DockPanel Style="{StaticResource PanelStyle}">

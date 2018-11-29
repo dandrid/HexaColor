@@ -80,14 +80,15 @@ namespace HexaColor.Client.Views
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
             string name = NameBox.Text;
-            int.TryParse((PlayerBox.SelectedItem as ComboBoxItem).Content.ToString(), out int playerCnt);
+            int.TryParse((PlayerBox.SelectedItem as ComboBoxItem).Content.ToString(), out int allPlayerCount);
+            int.TryParse((AIBox.SelectedItem as ComboBoxItem).Content.ToString(), out int aiPlayerCount);
+            string aiDiff = (AIDifficulty.SelectedItem as ComboBoxItem).Content.ToString();
             int.TryParse((ColorBox.SelectedItem as ComboBoxItem).Content.ToString(), out int colorCnt);
             int.TryParse((SizeBox.SelectedItem as ComboBoxItem).Content.ToString().Split('x')[0], out int size);
 
-            MapLayoutModel mapLayoutModel = new MapLayoutModel(name, playerCnt, colorCnt, size); // TODO player number
+            MapLayoutModel mapLayoutModel = new MapLayoutModel(name, allPlayerCount - aiPlayerCount, aiPlayerCount, aiDiff, colorCnt, size);
             mapLayoutModel.InitMapLayout();
             LeftPanelDataContext = mapLayoutModel;
-            //MessageBox.Show(String.Format("Initialized Name: {0}, Color count: {1}, Map size: {2}", name, colorCnt, size));
         }
     }
 }
