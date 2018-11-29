@@ -82,9 +82,10 @@ namespace HexaColor.Model
             {
                 foreach(Position neighbourPos in getNeighbourCellPositions(pos))
                 {
-                    if(cells[neighbourPos].color != startingColor)
+                    Color neighbourColor = cells[neighbourPos].color;
+                    if (neighbourColor != startingColor)
                     {
-                        differentColors.Add(cells[pos].color);
+                        differentColors.Add(neighbourColor);
                     }
                 }
             };

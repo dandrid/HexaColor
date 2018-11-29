@@ -102,6 +102,7 @@ namespace HexaColor.Model
 
                         i = 1; // Reset the cycle to find a next player
                         player = aiPlayer;
+                        continue;
                     }
                     else
                     {

@@ -61,7 +61,7 @@ namespace HexaColor.Client.Connections
                 }
 
                 MapUpdate mapUpdate;
-                if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate))
+                if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate) && mapUpdate.mapLayout != null)
                 {
                     MapUpdatEvent.Invoke(this, new MapUpdateEventArgs(mapUpdate));
                     continue;

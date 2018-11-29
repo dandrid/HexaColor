@@ -1,5 +1,6 @@
 ﻿using HexaColor.Client.Helpers;
 using HexaColor.Client.ViewModels;
+using HexaColor.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,9 +60,9 @@ namespace HexaColor.Client.Views
         {
             for (int i = 0; i < colorButtons.Count(); i++)
             {
-                Color origColor = ColorMap.Items.ElementAt(i).Value.Color;
+                System.Windows.Media.Color origColor = ColorMap.Items.ElementAt(i).Value.Color;
                 float factor = 0.4f;
-                Color newColor = Color.FromScRgb(origColor.ScA * factor, origColor.ScR * factor, origColor.ScG * factor, origColor.ScB * factor);
+                System.Windows.Media.Color newColor = System.Windows.Media.Color.FromScRgb(origColor.ScA * factor, origColor.ScR * factor, origColor.ScG * factor, origColor.ScB * factor);
                 colorButtons[i].Background = new SolidColorBrush(newColor);
                 colorButtons[i].IsEnabled = false;
             }
@@ -81,9 +82,17 @@ namespace HexaColor.Client.Views
 
         private void ChangeBtn_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            MessageBox.Show("Change!");
-            DisableColorButtons();
+            
+            
+            foreach(var value in ColorMap.Items)
+            {
+                if(value.Value == ChangeBtn.Background)
+                {
+                    ChangeBtn.Background = Brushes.Transparent;
+                    DisableColorButtons();
+                    AbstractViewModel.WebSocketConnection.Send(new ColorChange(value.Key));
+                }
+            }
         }
 
         private void SkipBtn_Click(object sender, RoutedEventArgs e)
