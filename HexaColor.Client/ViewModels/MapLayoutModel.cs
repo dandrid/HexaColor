@@ -22,12 +22,12 @@ namespace HexaColor.Client.ViewModels
 
         public event MapLayoutInitializedHandler MapLayoutInitialized;
 
-        public MapLayoutModel(string playerName, int playerNumber, int aiPlayerNumber, string aiDifficulyt, int mapColorCount, int mapSize)
+        public MapLayoutModel(string playerName, int playerNumber, int aiPlayerNumber, AiDifficulty aiDifficulyt, int mapColorCount, int mapSize)
         {
             PlayerName = playerName;
             HumanPlayerNumber = playerNumber;
             AIPlayerNumber = aiPlayerNumber;
-            AIDifficulty = (AiDifficulty)Enum.Parse(typeof(AiDifficulty), aiDifficulyt);
+            AIDifficulty = aiDifficulyt;
             MapColorCount = mapColorCount;
             MapSize = mapSize;
 

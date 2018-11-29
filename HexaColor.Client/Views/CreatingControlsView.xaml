@@ -5,113 +5,91 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HexaColor.Client.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.Resources>
-        <Style x:Key="NotPressedColorBtnStyle" TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="5,5,5,5" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid>
-                            <Rectangle RadiusX="5" RadiusY="5" Width="30" Height="30" Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"></Rectangle>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+             d:DesignHeight="600" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+        <Style x:Key="PanelStyle" TargetType="{x:Type DockPanel}">
+            <Setter Property="Margin" Value="0,5,0,5" />
         </Style>
-        <Style x:Key="PressedColorBtnStyle" TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="5,5,5,5" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid>
-                            <Rectangle RadiusX="5" RadiusY="5" Width="30" Height="30" Fill="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"></Rectangle>
-                            <Ellipse Width="10" Height="10" Fill="Black" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>-->
+    </UserControl.Resources>
+    
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="260"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Width="200">
+            <TextBlock Text="Map" FontWeight="Bold" />
+            <DockPanel Style="{StaticResource PanelStyle}">
+                <TextBlock Text="Size: " />
+                <ComboBox Name="MapSizeBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                    <ComboBoxItem Tag="3" Content="3x3" />
+                    <ComboBoxItem Tag="5" Content="5x5" />
+                    <ComboBoxItem Tag="7" Content="7x7" />
+                    <ComboBoxItem Tag="9" Content="9x9" />
+                    <ComboBoxItem Tag="11" Content="11x11" />
+                    <ComboBoxItem Tag="13" Content="13x13" />
+                    <ComboBoxItem Tag="15" Content="15x15" />
+                    <ComboBoxItem Tag="17" Content="17x17" />
+                    <ComboBoxItem Tag="19" Content="19x19" />
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Style="{StaticResource PanelStyle}">
+                <TextBlock Text="Color count: " />
+                <ComboBox Name="MapColorBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                    <ComboBoxItem Tag="4" Content="4" />
+                    <ComboBoxItem Tag="5" Content="5" />
+                    <ComboBoxItem Tag="6" Content="6" />
+                    <ComboBoxItem Tag="7" Content="7" />
+                    <ComboBoxItem Tag="8" Content="8" />
+                    <ComboBoxItem Tag="9" Content="9" />
+                    <ComboBoxItem Tag="10" Content="10" />
+                    <ComboBoxItem Tag="11" Content="11" />
+                    <ComboBoxItem Tag="12" Content="12" />
+                    <ComboBoxItem Tag="13" Content="13" />
+                    <ComboBoxItem Tag="14" Content="14" />
+                    <ComboBoxItem Tag="15" Content="15" />
+                    <ComboBoxItem Tag="16" Content="16" />
+                    <ComboBoxItem Tag="17" Content="17" />
+                    <ComboBoxItem Tag="18" Content="18" />
+                    <ComboBoxItem Tag="19" Content="19" />
+                    <ComboBoxItem Tag="20" Content="20" />
+                </ComboBox>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Width="200">
+            <TextBlock Text="Player" FontWeight="Bold" />
+            <DockPanel Style="{StaticResource PanelStyle}">
+                <TextBlock Text="Player Name: " />
+                <TextBox Name="PlayerNameBox" Width="100" HorizontalAlignment="Right" Text="TestPlayer_1"/>
+            </DockPanel>
+            <DockPanel Style="{StaticResource PanelStyle}">
+                <TextBlock Text="Player count: "/>
+                <ComboBox Name="PlayerCountBox" SelectedIndex="0" SelectionChanged="PlayerCountBox_SelectionChanged" Width="50" HorizontalAlignment="Right">
+                    <ComboBoxItem Tag="2" Content="2" />
+                    <ComboBoxItem Tag="4" Content="4" />
+                    <ComboBoxItem Tag="8" Content="8" />
+                </ComboBox>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Width="200">
+            <TextBlock Text="AI" FontWeight="Bold" />
+            <DockPanel Style="{StaticResource PanelStyle}">
+                <TextBlock Text="AI count: " />
+                <ComboBox Name="AICountBox" SelectedIndex="0" SelectionChanged="AICountBox_SelectionChanged" Width="50" HorizontalAlignment="Right">
+                    <ComboBoxItem Tag="0" Content="0" />
+                    <ComboBoxItem Tag="1" Content="1" />
+                </ComboBox>
+            </DockPanel>
+            <StackPanel Name="AIPlayersPanel" />
+        </StackPanel>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-        <StackPanel.Resources>
-            <Style x:Key="PanelStyle" TargetType="{x:Type DockPanel}">
-                <Setter Property="Margin" Value="0,10,0,10" />
-            </Style>
-        </StackPanel.Resources>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="Name: " />
-            <TextBox Name="NameBox" Width="150" HorizontalAlignment="Right" Text="TestPlayer_1"/>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="All player count: " />
-            <ComboBox Name="PlayerBox" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
-                <ComboBoxItem Content="2" />
-                <ComboBoxItem Content="4" />
-                <ComboBoxItem Content="8" />
-            </ComboBox>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="AI player count: " />
-            <ComboBox Name="AIBox" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
-                <ComboBoxItem Content="1" />
-                <ComboBoxItem Content="2" />
-                <ComboBoxItem Content="3" />
-                <ComboBoxItem Content="4" />
-                <ComboBoxItem Content="5" />
-                <ComboBoxItem Content="6" />
-                <ComboBoxItem Content="7" />
-                <ComboBoxItem Content="8" />
-            </ComboBox>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="AI difficulty: " />
-            <ComboBox Name="AIDifficulty" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
-                <ComboBoxItem Content="EASY" />
-                <ComboBoxItem Content="MEDIUM" />
-                <ComboBoxItem Content="HARD" />
-            </ComboBox>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="Color count: " />
-            <ComboBox Name="ColorBox" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
-                <ComboBoxItem Content="4" />
-                <ComboBoxItem Content="5" />
-                <ComboBoxItem Content="6" />
-                <ComboBoxItem Content="7" />
-                <ComboBoxItem Content="8" />
-                <ComboBoxItem Content="9" />
-                <ComboBoxItem Content="10" />
-                <ComboBoxItem Content="11" />
-                <ComboBoxItem Content="12" />
-                <ComboBoxItem Content="13" />
-                <ComboBoxItem Content="14" />
-                <ComboBoxItem Content="15" />
-                <ComboBoxItem Content="16" />
-                <ComboBoxItem Content="17" />
-                <ComboBoxItem Content="18" />
-                <ComboBoxItem Content="19" />
-                <ComboBoxItem Content="20" />
-            </ComboBox>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <TextBlock Text="Size: " />
-            <ComboBox Name="SizeBox" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
-                <ComboBoxItem Content="3x3" />
-                <ComboBoxItem Content="5x5" />
-                <ComboBoxItem Content="7x7" />
-                <ComboBoxItem Content="9x9" />
-                <ComboBoxItem Content="11x11" />
-                <ComboBoxItem Content="13x13" />
-                <ComboBoxItem Content="15x15" />
-                <ComboBoxItem Content="17x17" />
-                <ComboBoxItem Content="19x19" />
-            </ComboBox>
-        </DockPanel>
-        <DockPanel Style="{StaticResource PanelStyle}">
-            <Button Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" />
-            <Button Name="OkBtn" Click="OkBtn_Click" Content="Ok" HorizontalAlignment="Right" />
-        </DockPanel>
-    </StackPanel>
+        <Button Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" Width="60" HorizontalAlignment="Center" Margin="0,10,0,10" Grid.Row="2" Grid.Column="0" />
+        <Button Name="OkBtn" Click="OkBtn_Click" Content="Ok" Width="60" HorizontalAlignment="Center" Margin="0,10,0,10" Grid.Row="2" Grid.Column="1" />
+    </Grid>
 </UserControl>

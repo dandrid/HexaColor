@@ -22,9 +22,9 @@ namespace HexaColor.Model
 
     public enum AiDifficulty
     {
-        EASY,
-        MEDIUM,
-        HARD
+        EASY = 1,
+        MEDIUM = 2,
+        HARD = 3
     }
 
     public class AiPlayer : Player
