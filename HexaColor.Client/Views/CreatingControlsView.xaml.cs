@@ -82,7 +82,7 @@ namespace HexaColor.Client.Views
             string name = NameBox.Text;
             int.TryParse((PlayerBox.SelectedItem as ComboBoxItem).Content.ToString(), out int playerCnt);
             int.TryParse((ColorBox.SelectedItem as ComboBoxItem).Content.ToString(), out int colorCnt);
-            int.TryParse((SizeBox.SelectedItem as ComboBoxItem).Content.ToString().Substring(0,1), out int size);
+            int.TryParse((SizeBox.SelectedItem as ComboBoxItem).Content.ToString().Split('x')[0], out int size);
 
             MapLayoutModel mapLayoutModel = new MapLayoutModel(name, playerCnt, colorCnt, size); // TODO player number
             mapLayoutModel.InitMapLayout();
