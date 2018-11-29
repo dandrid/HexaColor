@@ -28,7 +28,6 @@ namespace HexaColor.Client.ViewModels
 
             WebSocketConnection.StartListening();
             WebSocketConnection.MapUpdate += WebSocketConnection_MapUpdate;
-            InitMapLayout();
         }
 
         private void WebSocketConnection_MapUpdate(object sender, MapUpdateEventArgs e)
