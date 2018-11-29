@@ -27,7 +27,7 @@
             <TextBlock Text="Map" FontWeight="Bold" />
             <DockPanel Style="{StaticResource PanelStyle}">
                 <TextBlock Text="Size: " />
-                <ComboBox Name="MapSizeBox" SelectedIndex="0" Width="50" HorizontalAlignment="Right">
+                <ComboBox Name="MapSizeBox" SelectedIndex="0" Width="80" HorizontalAlignment="Right">
                     <ComboBoxItem Tag="3" Content="3x3" />
                     <ComboBoxItem Tag="5" Content="5x5" />
                     <ComboBoxItem Tag="7" Content="7x7" />
