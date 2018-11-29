@@ -107,7 +107,7 @@ namespace HexaColor.Client.Views
                             new LineSegment(D, true),
                             new LineSegment(E, true),
                             new LineSegment(F, true)
-                        }
+                        }                        
                     }
                 }
                 });
@@ -161,10 +161,16 @@ namespace HexaColor.Client.Views
                 {
                     Canvas.SetTop(hexagon, row * 2 * Q.Y + Q.Y);
                 }
+
                 Model.Player player = Model.GameModel.players.Where(p => p.startingPosition.columnCooridnate == col && p.startingPosition.rowCooridnate == row).FirstOrDefault();
                 if(player != null)
                 {
-                    hexagon.Content = player.name;
+                    Viewbox textBox = new Viewbox();
+                    TextBlock playerNameText = new TextBlock();
+                    playerNameText.Text = player.name;
+                    playerNameText.FontSize = 4;
+                    textBox.Child = playerNameText;
+                    hexagon.Content = textBox;
                 }
                 MapLayoutCanvas.Children.Add(hexagon);
             }
