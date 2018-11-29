@@ -8,13 +8,8 @@ namespace HexaColor.Client.Connections
 {
     public interface IConnection
     {
-
-        //Task Open();
-        //Task Close();
-        //Task Send(Model.GameChange gameChangeEvent);
-        //Task<Model.GameUpdate> Receive();
-        //bool IsOpen();
-
-
+        public async Task Connect();
+        public async Task Send(GameChange message);
+        public async void StartListening();
     }
 }

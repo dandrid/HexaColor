@@ -15,14 +15,10 @@ using Newtonsoft.Json.Converters;
 
 namespace HexaColor.Client.Connections
 {
-    public class WebSocketConnection : IConnection
+    public class WebSocketConnection : AbstractConnection
     {
         private static Uri ConnectionUri = new Uri("ws://localhost:4280/HexaColor/");
         private ClientWebSocket webSocket;
-
-        public event EventHandler<GameErrorEventArgs> GameErrorEvent;
-        public event EventHandler<MapUpdateEventArgs> MapUpdatEvent;
-        public event EventHandler<NextPlayerEventArgs> NextPlayerEvent;
 
         public WebSocketConnection()
         {
@@ -84,6 +80,7 @@ namespace HexaColor.Client.Connections
                         message += "\n" + player.name + ": " + player.points;
                     }
                     MessageBox.Show(message);
+                    GameWonEvent(this, new GameWonEventArgs(gameWon));
                     continue;
                 }
 
@@ -118,49 +115,6 @@ namespace HexaColor.Client.Connections
         public class ServerDisconnectedException : Exception
         {
             public ServerDisconnectedException(string message) : base(message) { }
-        }
-    }
-    /*
-    public class PositionConverter : JsonConverter<Position>
-    {
-        public override void WriteJson(JsonWriter writer, Position value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
-        }
-
-        public override Position ReadJson(JsonReader reader, Type objectType, Position existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            string s = (string)reader.Value;
-
-            return new Position(s);
-        }
-    }*/
-
-    public class MapUpdateEventArgs : System.EventArgs
-    {
-        public readonly MapUpdate mapUpdate;
-
-        public MapUpdateEventArgs(MapUpdate mapUpdate)
-        {
-            this.mapUpdate = mapUpdate;
-        }
-    }
-    public class GameErrorEventArgs : System.EventArgs
-    {
-        public readonly GameError gameError;
-
-        public GameErrorEventArgs(GameError gameError)
-        {
-            this.gameError = gameError;
-        }
-    }
-    public class NextPlayerEventArgs : System.EventArgs
-    {
-        public readonly NextPlayer nextPlayer;
-
-        public NextPlayerEventArgs(NextPlayer nextPlayer)
-        {
-            this.nextPlayer = nextPlayer;
         }
     }
 }
