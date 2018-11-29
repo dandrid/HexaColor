@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Windows;
 using HexaColor.Model;
 using HexaColor.Networking;
 using Newtonsoft.Json;
@@ -68,23 +69,28 @@ namespace HexaColor.Client.Connections
                 }
 
                 NextPlayer nextPlayer;
-                if (tryParseEvent<NextPlayer>(buffer, packet, out nextPlayer))
+                if (tryParseEvent<NextPlayer>(buffer, packet, out nextPlayer) && nextPlayer.player != null)
                 {
                     NextPlayerEvent(this, new NextPlayerEventArgs(nextPlayer));
                     continue;
                 }
 
                 GameWon gameWon;
-                if (tryParseEvent<GameWon>(buffer, packet, out gameWon))
+                if (tryParseEvent<GameWon>(buffer, packet, out gameWon) && gameWon.players != null)
                 {
-                    // TODO handle game won
+                    string message = "Game won. Points:";
+                    foreach(Player player in gameWon.players)
+                    {
+                        message += "\n" + player.name + ": " + player.points;
+                    }
+                    MessageBox.Show(message);
                     continue;
                 }
 
                 GameError gameError;
                 if (tryParseEvent<GameError>(buffer, packet, out gameError))
                 {
-                    // TODO handle game error
+                    MessageBox.Show(gameError.error);
                     continue;
                 }
             }

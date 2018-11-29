@@ -100,7 +100,7 @@ namespace HexaColor.Model
                         Color chosenColor = aiPlayer.chooseColor(mapLayout, availableColors);
                         mapLayout.changeContinousColors(aiPlayer.startingPosition, chosenColor);
 
-                        i = 1; // Reset the cycle to find a next player
+                        i = 0; // Reset the cycle to find a next player
                         player = aiPlayer;
                         continue;
                     }
@@ -149,32 +149,12 @@ namespace HexaColor.Model
 
         public void calculatePoints()
         {
-            Dictionary<Color, Player> colorToPlayer = new Dictionary<Color, Player>();
             foreach (Player player in players)
             {
-                Cell playerCell;
-                if (mapLayout.cells.TryGetValue(player.startingPosition, out playerCell))
-                {
-                    colorToPlayer.Add(playerCell.color, player);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid state, player must have a starting position!");
-                }
-            }
-
-            foreach (var pair in mapLayout.cells)
-            {
-                Cell cell = pair.Value;
-                Player player;
-                if (colorToPlayer.TryGetValue(cell.color, out player))
-                {
-                    player.points++;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid state, game is not won!");
-                }
+                mapLayout.visitContiniousNeighbours((pos) =>
+               {
+                   player.points++;
+               }, player.startingPosition);
             }
         }
 

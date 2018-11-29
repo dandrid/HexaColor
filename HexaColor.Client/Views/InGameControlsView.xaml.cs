@@ -42,7 +42,6 @@ namespace HexaColor.Client.Views
 
         private void Model_NextPlayerEvent()
         {
-            MessageBox.Show("Your turn.");
             EnableleColorButtons(Model.AvailableColors);
         }
 
@@ -60,10 +59,10 @@ namespace HexaColor.Client.Views
         {
             for (int i = 0; i < colorButtons.Count(); i++)
             {
-                System.Windows.Media.Color origColor = ColorMap.Items.ElementAt(i).Value.Color;
-                float factor = 0.4f;
-                System.Windows.Media.Color newColor = System.Windows.Media.Color.FromScRgb(origColor.ScA * factor, origColor.ScR * factor, origColor.ScG * factor, origColor.ScB * factor);
-                colorButtons[i].Background = new SolidColorBrush(newColor);
+                //System.Windows.Media.Color origColor = ColorMap.Items.ElementAt(i).Value.Color;
+                //float factor = 0.4f;
+                //System.Windows.Media.Color newColor = System.Windows.Media.Color.FromScRgb(origColor.ScA * factor, origColor.ScR * factor, origColor.ScG * factor, origColor.ScB * factor);
+                colorButtons[i].Background = Brushes.Transparent;
                 colorButtons[i].IsEnabled = false;
             }
         }
