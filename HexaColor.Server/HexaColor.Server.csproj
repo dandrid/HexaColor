@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelManipulation\AiPlayerManipulation.cs" />
+    <Compile Include="ModelManipulation\Game.cs" />
+    <Compile Include="ModelManipulation\MapLayoutManipulation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />

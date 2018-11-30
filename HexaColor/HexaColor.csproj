@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Color.cs" />
-    <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GameChange.cs" />
     <Compile Include="Model\GameUpdate.cs" />
     <Compile Include="Model\MapLayout.cs" />

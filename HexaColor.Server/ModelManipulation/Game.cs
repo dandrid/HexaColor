@@ -1,17 +1,19 @@
-﻿using System;
+﻿using HexaColor.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexaColor.Model
+namespace HexaColor.Server.ModelManipulation
 {
     public class Game
     {
-        public MapLayout mapLayout;
+        public MapLayoutManipulation mapLayoutManipulation;
         public List<Player> players;
         public Player nextPlayer;
         public Queue<Position> availableStartingPositions;
+        private AiPlayerManipulation aiPlayerManipulation;
 
         public Game(NewGame parameters)
         {
@@ -26,9 +28,9 @@ namespace HexaColor.Model
             }
             players = new List<Player>();
             nextPlayer = null;
-
-            mapLayout = new MapLayout(parameters.rows, parameters.columns, parameters.usedColors);
-            availableStartingPositions = mapLayout.getPlayerStartingPositions(allPlayers);
+            aiPlayerManipulation = new AiPlayerManipulation();
+            mapLayoutManipulation = new MapLayoutManipulation(parameters.rows, parameters.columns, parameters.usedColors);
+            availableStartingPositions = mapLayoutManipulation.getPlayerStartingPositions(allPlayers);
 
             foreach(var aiConfig in parameters.aiPlayers)
             {
@@ -80,7 +82,7 @@ namespace HexaColor.Model
                     throw new InvalidOperationException(string.Format("Not this players turn! Next player is: {0}, but {1} sent a color", nextPlayer.name, player.name));
                 }
                 ColorChange colorChange = (ColorChange)change;
-                mapLayout.changeContinousColors(player.startingPosition, colorChange.newColor);
+                mapLayoutManipulation.changeContinousColors(player.startingPosition, colorChange.newColor);
             }
 
 
@@ -97,8 +99,9 @@ namespace HexaColor.Model
                     if(nextPlayer is AiPlayer) // If the player is AI, we do its turn
                     {
                         AiPlayer aiPlayer = nextPlayer as AiPlayer;
-                        Color chosenColor = aiPlayer.chooseColor(mapLayout, availableColors);
-                        mapLayout.changeContinousColors(aiPlayer.startingPosition, chosenColor);
+
+                        Color chosenColor = aiPlayerManipulation.chooseColor(mapLayoutManipulation, aiPlayer, availableColors);
+                        mapLayoutManipulation.changeContinousColors(aiPlayer.startingPosition, chosenColor);
 
                         i = 0; // Reset the cycle to find a next player
                         player = aiPlayer;
@@ -113,20 +116,20 @@ namespace HexaColor.Model
 
             // Game is won
             calculatePoints();
-            return new GameWon(players.OrderBy(p => p.points).ToList());
+            return new GameWon(players.OrderByDescending(p => p.points).ToList());
         }
 
         private HashSet<Color> getAvailableColors(Player player)
         {
-            HashSet<Color> availableColors = mapLayout.getContinousNeighbourColors(player.startingPosition);
+            HashSet<Color> availableColors = mapLayoutManipulation.getContinousNeighbourColors(player.startingPosition);
             foreach (Player p in players) // Do not allow the color of the other player, if they are neighbours
             {
                 if (p != player)
                 {
-                    Color playerColor = mapLayout.cells[p.startingPosition].color;
+                    Color playerColor = mapLayoutManipulation.mapLayout.cells[p.startingPosition].color;
                     if (availableColors.Contains(playerColor))
                     {
-                        if (mapLayout.areColorNeighbours(player.startingPosition, p.startingPosition))
+                        if (mapLayoutManipulation.areColorNeighbours(player.startingPosition, p.startingPosition))
                         {
                             availableColors.Remove(playerColor);
                         }
@@ -139,7 +142,7 @@ namespace HexaColor.Model
         public bool isGameWon()
         {
             ISet<Color> differentColorsInGame = new HashSet<Color>();
-            foreach (var pair in mapLayout.cells)
+            foreach (var pair in mapLayoutManipulation.mapLayout.cells)
             {
                 Cell cell = pair.Value;
                 differentColorsInGame.Add(cell.color);
@@ -151,7 +154,7 @@ namespace HexaColor.Model
         {
             foreach (Player player in players)
             {
-                mapLayout.visitContiniousNeighbours((pos) =>
+                mapLayoutManipulation.visitContiniousNeighbours((pos) =>
                {
                    player.points++;
                }, player.startingPosition);
@@ -160,7 +163,7 @@ namespace HexaColor.Model
 
         public MapUpdate createMapUpdate()
         {
-            return new MapUpdate(mapLayout, players);
+            return new MapUpdate(mapLayoutManipulation.mapLayout, players);
         }
     }
 
