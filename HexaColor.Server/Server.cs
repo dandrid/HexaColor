@@ -14,7 +14,7 @@ using System.Web.Script.Serialization;
 
 namespace HexaColor.Server
 {
-    class Program
+    class Server
     {
 
         static List<Session> sessions = new List<Session>();
