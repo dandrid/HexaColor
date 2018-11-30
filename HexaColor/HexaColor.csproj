@@ -58,8 +58,6 @@
     <Compile Include="Model\MapLayout.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Position.cs" />
-    <Compile Include="Networking\WsClientMessage.cs" />
-    <Compile Include="Networking\WsServerMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

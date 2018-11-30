@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using HexaColor.Model;
-using HexaColor.Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -26,7 +25,7 @@ namespace HexaColor.Client.Connections
             
         }
 
-        public async Task Connect()
+        public override async Task Connect()
         {
             if (webSocket.State != WebSocketState.Open && webSocket.State != WebSocketState.Connecting)
             {
@@ -34,7 +33,7 @@ namespace HexaColor.Client.Connections
             }
         }
 
-        public async Task Send(GameChange message)
+        public override async Task Send(GameChange message)
         {
             byte[] buffer;
             string json = JsonConvert.SerializeObject(message, new KeyValuePairConverter());
@@ -42,7 +41,7 @@ namespace HexaColor.Client.Connections
             await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
-        public async void StartListening()
+        public override async void StartListening()
         {
             await Connect();
             var buffer = new byte[10000];
@@ -60,14 +59,14 @@ namespace HexaColor.Client.Connections
                 MapUpdate mapUpdate;
                 if (tryParseEvent<MapUpdate>(buffer, packet, out mapUpdate) && mapUpdate.mapLayout != null)
                 {
-                    MapUpdatEvent.Invoke(this, new MapUpdateEventArgs(mapUpdate));
+                    OnMapUpdatEvent(new MapUpdateEventArgs(mapUpdate));
                     continue;
                 }
 
                 NextPlayer nextPlayer;
                 if (tryParseEvent<NextPlayer>(buffer, packet, out nextPlayer) && nextPlayer.player != null)
                 {
-                    NextPlayerEvent(this, new NextPlayerEventArgs(nextPlayer));
+                    OnNextPlayerEvent(new NextPlayerEventArgs(nextPlayer));
                     continue;
                 }
 
@@ -80,7 +79,7 @@ namespace HexaColor.Client.Connections
                         message += "\n" + player.name + ": " + player.points;
                     }
                     MessageBox.Show(message);
-                    GameWonEvent(this, new GameWonEventArgs(gameWon));
+                    OnGameWonEvent(new GameWonEventArgs(gameWon));
                     continue;
                 }
 
@@ -93,6 +92,25 @@ namespace HexaColor.Client.Connections
             }
         }
 
+        protected override void OnGameErrorEvent(GameErrorEventArgs e)
+        {
+            base.OnGameErrorEvent(e);
+        }
+
+        protected override void OnGameWonEvent(GameWonEventArgs e)
+        {
+            base.OnGameWonEvent(e);
+        }
+
+        protected override void OnMapUpdatEvent(MapUpdateEventArgs e)
+        {
+            base.OnMapUpdatEvent(e);
+        }
+
+        protected override void OnNextPlayerEvent(NextPlayerEventArgs e)
+        {
+            base.OnNextPlayerEvent(e);
+        }
 
         private bool tryParseEvent<EventType>(byte[] buffer, WebSocketReceiveResult packet, out EventType gameUpdate) where EventType : GameUpdate
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HexaColor.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace HexaColor.Client.Connections
 {
     public interface IConnection
     {
-        public async Task Connect();
-        public async Task Send(GameChange message);
-        public async void StartListening();
+        Task Connect();
+        Task Send(GameChange message);
+        void StartListening();
     }
 }

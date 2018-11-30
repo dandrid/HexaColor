@@ -1,6 +1,5 @@
 ﻿using HexaColor.Client.Connections;
 using HexaColor.Client.ViewModels;
-using HexaColor.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;

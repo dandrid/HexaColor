@@ -1,5 +1,4 @@
 ﻿using HexaColor.Model;
-using HexaColor.Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;

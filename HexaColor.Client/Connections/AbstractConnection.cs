@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using HexaColor.Model;
 
 namespace HexaColor.Client.Connections
@@ -9,6 +10,27 @@ namespace HexaColor.Client.Connections
         public event EventHandler<GameErrorEventArgs> GameErrorEvent;
         public event EventHandler<MapUpdateEventArgs> MapUpdatEvent;
         public event EventHandler<NextPlayerEventArgs> NextPlayerEvent;
+
+        public abstract Task Connect();
+        public abstract Task Send(GameChange message);
+        public abstract void StartListening();
+
+        protected virtual void OnGameWonEvent(GameWonEventArgs e)
+        {
+            GameWonEvent?.Invoke(this, e);
+        }
+        protected virtual void OnGameErrorEvent(GameErrorEventArgs e)
+        {
+            GameErrorEvent?.Invoke(this, e);
+        }
+        protected virtual void OnMapUpdatEvent(MapUpdateEventArgs e)
+        {
+            MapUpdatEvent?.Invoke(this, e);
+        }
+        protected virtual void OnNextPlayerEvent(NextPlayerEventArgs e)
+        {
+            NextPlayerEvent?.Invoke(this, e);
+        }
     }
 
     public class MapUpdateEventArgs : System.EventArgs
