@@ -10,13 +10,10 @@ namespace HexaColor.Client.ViewModels
 {
     public abstract class AbstractViewModel
     {
-        private static WebSocketConnection webSocketConnection;
+        private readonly static WebSocketConnection webSocketConnection = 
+            new WebSocketConnection();
         public static WebSocketConnection WebSocketConnection {
-            get {
-                if (webSocketConnection == null)
-                    webSocketConnection = new WebSocketConnection();
-                return webSocketConnection;
-            }
+            get => webSocketConnection;
         }
     }
 }
